@@ -1,5 +1,6 @@
 package com.ajeffcorrigan.game.animalmatch;
 
+import com.ajeffcorrigan.game.animalmatch.screens.GamePlayScreen;
 import com.ajeffcorrigan.game.animalmatch.screens.MainMenuScreen;
 import com.ajeffcorrigan.game.animalmatch.screens.SplashScreen;
 import com.ajeffcorrigan.game.animalmatch.tools.ScreenHandler;
@@ -18,7 +19,8 @@ public class AnimalMatch extends Game {
 
 		sHandler = new ScreenHandler();
 		sHandler.AddScreen("splash",new SplashScreen(this),true);
-		sHandler.AddScreen("mainmenu",new MainMenuScreen(),false);
+		sHandler.AddScreen("mainmenu",new MainMenuScreen(this),false);
+		sHandler.AddScreen("gameplay",new GamePlayScreen(this),false);
 		setScreen(sHandler.getScreen());
 	}
 
