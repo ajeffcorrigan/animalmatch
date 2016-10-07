@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.GL20;
 public class GamePlayScreen extends ScreenAdapter {
 
     private AnimalMatch game;
+    private boolean gameScreenInit = false;
 
     public GamePlayScreen(AnimalMatch game) {
         this.game = game;
