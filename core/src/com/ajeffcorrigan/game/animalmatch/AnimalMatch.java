@@ -12,10 +12,16 @@ public class AnimalMatch extends Game {
 
 	public ScreenHandler sHandler;
 
+	public static int gw;
+	public static int gh;
+
 	@Override
 	public void create() {
 		Gdx.app.setLogLevel(Application.LOG_DEBUG);
 		Gdx.app.debug(this.getClass().getSimpleName(), "create() method.");
+
+		gw = Gdx.graphics.getWidth();
+		gh = Gdx.graphics.getHeight();
 
 		sHandler = new ScreenHandler();
 		sHandler.AddScreen("splash",new SplashScreen(this),true);

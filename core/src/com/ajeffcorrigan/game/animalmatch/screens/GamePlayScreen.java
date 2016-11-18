@@ -1,9 +1,13 @@
 package com.ajeffcorrigan.game.animalmatch.screens;
 
 import com.ajeffcorrigan.game.animalmatch.AnimalMatch;
+import com.ajeffcorrigan.game.animalmatch.gamesystem.GameBoard;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 /**
  * Created by jacorrigan on 9/29/2016.
@@ -12,10 +16,24 @@ import com.badlogic.gdx.graphics.GL20;
 public class GamePlayScreen extends ScreenAdapter {
 
     private AnimalMatch game;
+
     private boolean gameScreenInit = false;
 
+    private GameBoard gameBoard;
+
+    //basic play screen variables
+    public OrthographicCamera gamecam;
+    private Viewport gamePort;
+
     public GamePlayScreen(AnimalMatch game) {
+
         this.game = game;
+
+        //Game camera and viewport setup.
+        gamecam = new OrthographicCamera();
+        gamePort = new FitViewport(AnimalMatch.gw, AnimalMatch.gh, gamecam);
+        gamecam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
+        gamecam.setToOrtho(false);
     }
 
     @Override
@@ -56,4 +74,5 @@ public class GamePlayScreen extends ScreenAdapter {
     public void dispose() {
         super.dispose();
     }
+
 }
