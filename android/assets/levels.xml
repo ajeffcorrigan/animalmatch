@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<levels>
+	<level id="1" x="4" y="4">
+		<cell row="all" col="all" locked="0">
+			<bg id="0" img="grass"/>
+		</cell>
+	</level>
+	<level id="2" x="5" y="4" />
+	<level id="3" x="6" y="4" />
+</levels>

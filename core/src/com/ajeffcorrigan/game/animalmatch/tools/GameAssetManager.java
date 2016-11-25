@@ -7,6 +7,6 @@ package com.ajeffcorrigan.game.animalmatch.tools;
 public class GameAssetManager {
     public GameAssetManager() {
         jAssets.loadTextureAs("bgsheet", "RPGpack_sheet.png");
-        jAssets.createTextureRegion("dirt", "bgsheet", 576, 864, 70, 70);
+        jAssets.createTextureRegion("grass", "bgsheet", 576, 864, 64, 64);
     }
 }

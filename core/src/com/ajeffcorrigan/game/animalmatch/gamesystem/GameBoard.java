@@ -16,21 +16,36 @@ public class GameBoard {
     private Vector2 startLoc;
 
     public GameBoard(Vector2 sl, Vector2 gl) {
-        this.gameBoardSize = gl;
         this.startLoc = sl;
+        this.gameBoardSize = gl;
+        this.CreateBlankBoard();
+
     }
 
-    public void CreateBoard() {
-        Gdx.app.debug(this.getClass().getSimpleName(), "Creating new game board.");
+    private void CreateBlankBoard() {
+        Gdx.app.debug(this.getClass().getSimpleName(), "Creating a new empty game board.");
         gameCells = new Array<GameCell>();
         for(int x = 0; x < gameBoardSize.x; x++) {
             for(int y = 0; y < gameBoardSize.y; y++) {
-                gameCells.add(new GameCell(new Vector2(x, y)));
+                gameCells.add(new GameCell(new Vector2(x, y),new Vector2((x) * startLoc.x, (y) * startLoc.y)));
             }
         }
     }
 
-    public void draw(SpriteBatch sb) {
-        for(GameCell gc : gameCells) {  }
+    private void drawBoard(SpriteBatch sb) {
+        for(GameCell gc : gameCells) {
+            gc.drawAll(sb);
+        }
     }
+
+    public Vector2 getCellLocation(Vector2 xyLoc) {
+        for(GameCell gc : gameCells) {
+            Vector2 curLoc = gc.getLogicCoordinates();
+            if(curLoc.sub(xyLoc).isZero()) {
+                return gc.getScreenLocation();
+            }
+        }
+        return null;
+    }
+
 }

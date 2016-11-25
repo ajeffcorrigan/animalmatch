@@ -2,6 +2,7 @@ package com.ajeffcorrigan.game.animalmatch.screens;
 
 import com.ajeffcorrigan.game.animalmatch.AnimalMatch;
 import com.ajeffcorrigan.game.animalmatch.gamesystem.GameBoard;
+import com.ajeffcorrigan.game.animalmatch.tools.GameLevelManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
@@ -12,16 +13,19 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import java.io.IOException;
+
 /**
  * Created by jacorrigan on 9/29/2016.
  */
 
 public class GamePlayScreen extends ScreenAdapter {
 
+    // AnimalMatch game object.
     private AnimalMatch game;
-
-    private boolean gameScreenInit = false;
-
+    // Game Level Manager
+    private GameLevelManager glm;
+    // Game Board object.
     private GameBoard gameBoard;
 
     //basic play screen variables
@@ -33,6 +37,7 @@ public class GamePlayScreen extends ScreenAdapter {
 
     public GamePlayScreen(AnimalMatch game) {
 
+        // Initialize the main game object.
         this.game = game;
 
         //Game camera and viewport setup.
@@ -41,8 +46,12 @@ public class GamePlayScreen extends ScreenAdapter {
         gamecam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
         gamecam.setToOrtho(false);
 
-        gameBoard = new GameBoard(new Vector2(20,20),new Vector2(5,5));
-        gameBoard.CreateBoard();
+        // Initialize the game level manager object.
+        glm = new GameLevelManager();
+
+        gameBoard = new GameBoard(new Vector2(20,20),glm.getLevelSize());
+
+        Gdx.app.debug(this.getClass().getSimpleName(), "Screen location:"+gameBoard.getCellLocation(new Vector2(2,1)));
     }
 
     @Override
@@ -54,7 +63,6 @@ public class GamePlayScreen extends ScreenAdapter {
 
         game.batch.setProjectionMatrix(gamecam.combined);
         game.batch.begin();
-
         game.batch.end();
     }
 
