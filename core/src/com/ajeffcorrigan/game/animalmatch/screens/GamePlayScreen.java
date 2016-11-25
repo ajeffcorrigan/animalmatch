@@ -6,6 +6,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -25,6 +28,9 @@ public class GamePlayScreen extends ScreenAdapter {
     public OrthographicCamera gamecam;
     private Viewport gamePort;
 
+    private TextureRegion region;
+    private Texture texture;
+
     public GamePlayScreen(AnimalMatch game) {
 
         this.game = game;
@@ -34,6 +40,9 @@ public class GamePlayScreen extends ScreenAdapter {
         gamePort = new FitViewport(AnimalMatch.gw, AnimalMatch.gh, gamecam);
         gamecam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
         gamecam.setToOrtho(false);
+
+        gameBoard = new GameBoard(new Vector2(20,20),new Vector2(5,5));
+        gameBoard.CreateBoard();
     }
 
     @Override
@@ -42,6 +51,11 @@ public class GamePlayScreen extends ScreenAdapter {
         //Clear the game screen
         Gdx.gl.glClearColor( 0f, 0f, 0f, 0);
         Gdx.gl.glClear( GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT );
+
+        game.batch.setProjectionMatrix(gamecam.combined);
+        game.batch.begin();
+
+        game.batch.end();
     }
 
     @Override

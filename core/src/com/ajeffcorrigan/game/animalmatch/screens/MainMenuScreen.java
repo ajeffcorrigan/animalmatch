@@ -37,7 +37,7 @@ public class MainMenuScreen extends ScreenAdapter {
         if (Gdx.input.justTouched()) {
             Gdx.app.debug(this.getClass().getSimpleName(), "Screen has been touched.");
             Gdx.app.debug(this.getClass().getSimpleName(), "delta value: " + delta);
-            this.game.setScreen(this.game.sHandler.getScreen("gameplay"));
+            this.game.setScreen(new GamePlayScreen(this.game));
             this.dispose();
         }
     }

@@ -1,7 +1,6 @@
 package com.ajeffcorrigan.game.animalmatch.screens;
 
 import com.ajeffcorrigan.game.animalmatch.AnimalMatch;
-import com.ajeffcorrigan.game.animalmatch.tools.ScreenHandler;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
@@ -24,7 +23,7 @@ public class SplashScreen extends ScreenAdapter {
         if(assetsLoaded) {
             Gdx.app.debug(this.getClass().getSimpleName(), "assets have been loaded.");
             Gdx.app.debug(this.getClass().getSimpleName(), "delta value: " + delta);
-            this.game.setScreen(this.game.sHandler.getScreen("mainmenu"));
+            this.game.setScreen(new MainMenuScreen(this.game));
             this.dispose();
         } else {
             Gdx.app.debug(this.getClass().getSimpleName(), "delta value: " + delta);

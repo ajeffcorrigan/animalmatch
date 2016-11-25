@@ -1,12 +1,13 @@
 package com.ajeffcorrigan.game.animalmatch.gamesystem;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 
 /**
  * Created by admin on 10/6/2016.
  */
 
-public class GameCell {
+public class GameCell extends Sprite {
 
     // Cell coordinates in array.
     private Vector2 logicCoordinates;
