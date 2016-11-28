@@ -2,6 +2,7 @@ package com.ajeffcorrigan.game.animalmatch.screens;
 
 import com.ajeffcorrigan.game.animalmatch.AnimalMatch;
 import com.ajeffcorrigan.game.animalmatch.gamesystem.GameBoard;
+import com.ajeffcorrigan.game.animalmatch.gamesystem.GameCell;
 import com.ajeffcorrigan.game.animalmatch.tools.GameLevelManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
@@ -32,9 +33,6 @@ public class GamePlayScreen extends ScreenAdapter {
     public OrthographicCamera gamecam;
     private Viewport gamePort;
 
-    private TextureRegion region;
-    private Texture texture;
-
     public GamePlayScreen(AnimalMatch game) {
 
         // Initialize the main game object.
@@ -49,9 +47,7 @@ public class GamePlayScreen extends ScreenAdapter {
         // Initialize the game level manager object.
         glm = new GameLevelManager();
 
-        gameBoard = new GameBoard(new Vector2(20,20),glm.getLevelSize());
-
-        Gdx.app.debug(this.getClass().getSimpleName(), "Screen location:"+gameBoard.getCellLocation(new Vector2(2,1)));
+        gameBoard = new GameBoard(new Vector2(30,30),glm.getLevelSize(),glm,new Vector2(this.game.gam.xSize,this.game.gam.xSize));
     }
 
     @Override
@@ -63,6 +59,7 @@ public class GamePlayScreen extends ScreenAdapter {
 
         game.batch.setProjectionMatrix(gamecam.combined);
         game.batch.begin();
+        gameBoard.drawBoard(game.batch);
         game.batch.end();
     }
 

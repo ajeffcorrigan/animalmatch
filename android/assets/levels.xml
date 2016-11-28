@@ -1,8 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <levels>
-	<level id="1" x="4" y="4">
-		<cell row="all" col="all" locked="0">
+	<level id="1" x="5" y="5">
+		<cell row="-1" col="-1" barrier="0" canoccupy="false">
 			<bg id="0" img="grass"/>
+		</cell>
+		<cell row="2" col="3" barrier="0" canoccupy="false">
+			<bg id="0" img="grass"/>
+		</cell>
+		<cell row="0" col="0" barrier="8" canoccupy="false">
+			<bg id="1" img="box"/>
+			<bg id="0" img="grass"/>
+		</cell>
+		<cell row="3" col="1" barrier="8" canoccupy="false">
+			<bg id="0" img="grass2"/>
+		</cell>
+		<cell row="1" col="1" barrier="8" canoccupy="false">
+			<bg id="0" img="grass"/>
+			<bg id="1" img="smorangebush"/>
+		</cell>
+		<cell row="2" col="0" barrier="8" canoccupy="false">
+			<bg id="0" img="grass3"/>
 		</cell>
 	</level>
 	<level id="2" x="5" y="4" />
