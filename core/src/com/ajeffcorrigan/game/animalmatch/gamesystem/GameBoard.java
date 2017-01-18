@@ -18,14 +18,18 @@ public class GameBoard {
     private GameLevelManager glm;
     // Tile Size
     private Vector2 tileSize;
+    // Scale to fit screen
+    private float scaleImage;
 
     public GameBoard(Vector2 sl, Vector2 gl, GameLevelManager glm,Vector2 tSz) {
         this.startLoc = sl;
         this.gameBoardSize = gl;
         this.glm = glm;
         this.tileSize = tSz;
+        this.scaleImage = 1f;
         this.CreateBlankBoard();
         this.populateBoard();
+        this.updateScale();
     }
 
     private void CreateBlankBoard() {
@@ -46,6 +50,13 @@ public class GameBoard {
     }
 
 
+    private void updateScale() {
+        for(GameCell gc : gameCells) {
+            gc.updateSpriteScale(scaleImage);
+        }
+    }
+
+    // Draws the board to the sprite batch.
     public void drawBoard(SpriteBatch sb) {
         for(GameCell gc : gameCells) {
             gc.drawAll(sb);
