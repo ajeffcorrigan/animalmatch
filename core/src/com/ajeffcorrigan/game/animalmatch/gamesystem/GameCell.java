@@ -45,6 +45,13 @@ public class GameCell {
         }
     }
 
+    public void updateSpriteScale(float sImg) {
+        for(SpriteLayer sl : bgLayer) {
+            sl.setScale(sImg);
+            Gdx.app.debug(this.getClass().getSimpleName(), "Get Origin"+sl.getOriginX());
+        }
+    }
+
     public void drawForeground() {}
 
     public void drawAll(SpriteBatch sb) {
