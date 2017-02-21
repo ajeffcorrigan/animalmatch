@@ -28,6 +28,8 @@ public class GamePlayScreen extends ScreenAdapter {
     private GameLevelManager glm;
     // Game Board object.
     private GameBoard gameBoard;
+    // Starting location of gameboard entity
+    private Vector2 gbLocation;
 
     //basic play screen variables
     public OrthographicCamera gamecam;
@@ -42,12 +44,15 @@ public class GamePlayScreen extends ScreenAdapter {
         gamecam = new OrthographicCamera();
         gamePort = new FitViewport(AnimalMatch.gw, AnimalMatch.gh, gamecam);
         gamecam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
-        gamecam.setToOrtho(false);
+        gamecam.setToOrtho(true);
+
+        //Set start location of the game board entity
+        gbLocation = new Vector2(AnimalMatch.gw * .025f,AnimalMatch.gh * .005f);
 
         // Initialize the game level manager object.
         glm = new GameLevelManager();
 
-        gameBoard = new GameBoard(new Vector2(30,30),glm.getLevelSize(),glm,new Vector2(this.game.gam.xSize,this.game.gam.xSize));
+        gameBoard = new GameBoard(gbLocation,glm.getLevelSize(),glm,new Vector2(this.game.gam.xSize,this.game.gam.xSize));
     }
 
     @Override

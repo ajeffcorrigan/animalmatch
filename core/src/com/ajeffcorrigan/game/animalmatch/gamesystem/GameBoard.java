@@ -21,8 +21,10 @@ public class GameBoard {
     // Scale to fit screen
     private float scaleImage;
 
-    public GameBoard(Vector2 sl, Vector2 gl, GameLevelManager glm,Vector2 tSz) {
+    public GameBoard(Vector2 sl, Vector2 gl, GameLevelManager glm, Vector2 tSz) {
+        // Start location of the game board.
         this.startLoc = sl;
+        // Size of game board, row by column
         this.gameBoardSize = gl;
         this.glm = glm;
         this.tileSize = tSz;
