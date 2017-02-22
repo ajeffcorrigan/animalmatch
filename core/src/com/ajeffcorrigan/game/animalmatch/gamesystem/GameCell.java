@@ -26,8 +26,6 @@ public class GameCell {
     // Can be occupied by player
     private boolean canBeOccupied;
 
-
-
     public GameCell(Vector2 lc) {
         this.logicCoordinates = new Vector2(lc);
     }
@@ -45,10 +43,10 @@ public class GameCell {
         }
     }
 
-    public void updateSpriteScale(float sImg) {
+    public void updateSpriteScale(Vector2 sImg) {
         for(SpriteLayer sl : bgLayer) {
-            sl.setScale(sImg);
-            Gdx.app.debug(this.getClass().getSimpleName(), "Get Origin"+sl.getOriginX());
+            //sl.setScale(sImg.x,sImg.y);
+            sl.setSize(sl.getWidth() * sImg.x,sl.getHeight() * sImg.y);
         }
     }
 

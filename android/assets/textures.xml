@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<texturefiles>
+    <texture file="RPGpack_sheet.png" sheet="backGroundSheet" square="yes" tileSizeX="64" tileSizeY="64">
+        <region name="t_l_grass_dirt" xLoc="0" yLoc="0" code="000a0"></region>
+        <region name="t_grass_dirt" xLoc="1" yLoc="0" code="002a0"></region>
+        <region name="t_r_grass_dirt" xLoc="2" yLoc="0" code="003a0"></region>
+        <region name="grass_b_r_smdirt" xLoc="3" yLoc="0" code="004a0"></region>
+        <region name="grass_b_l_smdirt" xLoc="4" yLoc="0" code="005a0"></region>
+        <region name="t_l_dirt_grass" xLoc="5" yLoc="0" code="006a0"></region>
+        <region name="l_grass_dirt" xLoc="0" yLoc="1" code="007a0"></region>
+        <region name="grass_0" xLoc="1" yLoc="1" code="008r3"></region>
+        <region name="grass_1" xLoc="3" yLoc="2" code="009r3"></region>
+        <region name="grass_2" xLoc="4" yLoc="2" code="010r3"></region>
+        <region name="lg_box" xLoc="8" yLoc="9" code="015a0"></region>
+        <region name="sm_box" xLoc="9" yLoc="9" code="015a0"></region>
+        <region name="sm_orange_bush" xLoc="3" yLoc="9" code="015a0"></region>
+        <region name="lg_orange_bush" xLoc="2" yLoc="9" code="015a0"></region>
+        <region name="sm_green_bush" xLoc="1" yLoc="9" code="015a0"></region>
+        <region name="lg_green_bush" xLoc="0" yLoc="9" code="015a0"></region>
+    </texture>
+</texturefiles>

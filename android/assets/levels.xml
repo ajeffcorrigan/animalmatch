@@ -1,26 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <levels>
-	<level id="1" x="5" y="5">
+	<level id="1" x="4" y="4">
 		<cell row="-1" col="-1" barrier="0" canoccupy="false">
-			<bg id="0" img="grass"/>
+			<bg id="0" img="grass_1"/>
 		</cell>
 		<cell row="2" col="3" barrier="0" canoccupy="false">
-			<bg id="0" img="grass"/>
+			<bg id="0" img="grass_0"/>
 		</cell>
 		<cell row="0" col="0" barrier="8" canoccupy="false">
-			<bg id="1" img="box"/>
-			<bg id="0" img="grass"/>
+			<bg id="1" img="lg_box"/>
+			<bg id="0" img="grass_1"/>
 		</cell>
 		<cell row="3" col="1" barrier="8" canoccupy="false">
-			<bg id="0" img="grass2"/>
+			<bg id="0" img="grass_2"/>
 		</cell>
 		<cell row="1" col="1" barrier="8" canoccupy="false">
-			<bg id="0" img="grass"/>
-			<bg id="1" img="smorangebush"/>
+			<bg id="0" img="grass_0"/>
+			<bg id="1" img="sm_orange_bush"/>
 		</cell>
 		<cell row="2" col="0" barrier="8" canoccupy="false">
-			<bg id="0" img="grass3"/>
+			<bg id="0" img="grass_1"/>
 		</cell>
+
 	</level>
 	<level id="2" x="5" y="4" />
 	<level id="3" x="6" y="4" />

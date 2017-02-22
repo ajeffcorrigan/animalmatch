@@ -33,6 +33,7 @@ public class AnimalMatch extends Game {
 		// Initialize the sprite batch.
 		batch = new SpriteBatch();
 
+		// Initialize the game asset manager.
 		gam = new GameAssetManager();
 
 		// Set the splash screen as starting screen.

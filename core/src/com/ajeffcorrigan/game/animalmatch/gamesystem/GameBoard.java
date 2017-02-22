@@ -1,5 +1,6 @@
 package com.ajeffcorrigan.game.animalmatch.gamesystem;
 
+import com.ajeffcorrigan.game.animalmatch.AnimalMatch;
 import com.ajeffcorrigan.game.animalmatch.tools.GameLevelManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -19,17 +20,28 @@ public class GameBoard {
     // Tile Size
     private Vector2 tileSize;
     // Scale to fit screen
-    private float scaleImage;
+    private Vector2 scaleImage = new Vector2(1f,1f);
+    // Game Board size
+    private Vector2 gbSize;
 
-    public GameBoard(Vector2 sl, Vector2 gl, GameLevelManager glm, Vector2 tSz) {
+    public GameBoard(Vector2 sl, GameLevelManager glm, Vector2 tSz) {
         // Start location of the game board.
         this.startLoc = sl;
         // Size of game board, row by column
-        this.gameBoardSize = gl;
+        this.gameBoardSize = glm.getLevelSize();
+        // Game Level Manager Object
         this.glm = glm;
+        // Sets the tile size based on the Game Asset Manager value
         this.tileSize = tSz;
-        this.scaleImage = 1f;
+        // Board size.
+        this.gbSize = new Vector2(AnimalMatch.gw - (AnimalMatch.gw * .025f), AnimalMatch.gh - (AnimalMatch.gh * .30f));
+        // Set Image scale
+        this.scaleImage.x = (this.gbSize.x / this.gameBoardSize.x) / this.tileSize.x;
+        this.scaleImage.y = (this.gbSize.y / this.gameBoardSize.y) / this.tileSize.y;
+
+        // Create a blank board with coordinates and cell locations.
         this.CreateBlankBoard();
+        // Populate the board with graphics.
         this.populateBoard();
         this.updateScale();
     }
@@ -39,7 +51,7 @@ public class GameBoard {
         gameCells = new Array<GameCell>();
         for(int x = 0; x < gameBoardSize.x; x++) {
             for(int y = 0; y < gameBoardSize.y; y++) {
-                gameCells.add(new GameCell(new Vector2(x, y),new Vector2((this.tileSize.x * x) + startLoc.x, (this.tileSize.y * y) + startLoc.y)));
+                gameCells.add(new GameCell(new Vector2(x, y),new Vector2(((this.tileSize.x * x) * this.scaleImage.x) + startLoc.x, ((this.tileSize.y * y) * this.scaleImage.y) + startLoc.y)));
             }
         }
     }
