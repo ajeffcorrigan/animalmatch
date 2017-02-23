@@ -7,6 +7,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+
 public class GameBoard {
 
     // Array of GameCell objects.
@@ -34,20 +38,18 @@ public class GameBoard {
         // Sets the tile size based on the Game Asset Manager value
         this.tileSize = tSz;
         // Board size.
-        this.gbSize = new Vector2(AnimalMatch.gw - (AnimalMatch.gw * .025f), AnimalMatch.gh - (AnimalMatch.gh * .30f));
-        // Set Image scale
-        this.scaleImage.x = (this.gbSize.x / this.gameBoardSize.x) / this.tileSize.x;
-        this.scaleImage.y = (this.gbSize.y / this.gameBoardSize.y) / this.tileSize.y;
-
+        this.gbSize = new Vector2(AnimalMatch.gw - ((AnimalMatch.gw * .02f) * 2), AnimalMatch.gh - (AnimalMatch.gh * .30f));
+        // Set the scale of the board based on board size
+        this.setScale();
         // Create a blank board with coordinates and cell locations.
         this.CreateBlankBoard();
         // Populate the board with graphics.
         this.populateBoard();
+        // Update the scale of board.
         this.updateScale();
     }
 
     private void CreateBlankBoard() {
-        Gdx.app.debug(this.getClass().getSimpleName(), "Creating a new empty game board.");
         gameCells = new Array<GameCell>();
         for(int x = 0; x < gameBoardSize.x; x++) {
             for(int y = 0; y < gameBoardSize.y; y++) {
@@ -56,19 +58,11 @@ public class GameBoard {
         }
     }
 
-    private void populateBoard() {
-        for(GameCell gc : gameCells) {
-            glm.updateGameCell(gc);
-        }
-        Gdx.app.debug(this.getClass().getSimpleName(), "Exiting populateBoard function.");
-    }
+    // Populates the game board with graphics.
+    private void populateBoard() { for(GameCell gc : gameCells) { this.glm.updateGameCell(gc); } }
 
-
-    private void updateScale() {
-        for(GameCell gc : gameCells) {
-            gc.updateSpriteScale(scaleImage);
-        }
-    }
+    // Updates the scale of the board's graphics, should be called if scaleImage variable changes.
+    private void updateScale() { for(GameCell gc : gameCells) { gc.updateSpriteScale(scaleImage); } }
 
     // Draws the board to the sprite batch.
     public void drawBoard(SpriteBatch sb) {
@@ -88,5 +82,20 @@ public class GameBoard {
     }
 
     public Array<GameCell> getGameCells() { return gameCells; }
+
+    private void setScale() {
+        BigDecimal bd;
+        int decPlaces = 3;
+
+        // Set Image scale
+        this.scaleImage.x = (this.gbSize.x / this.gameBoardSize.x) / this.tileSize.x;
+        bd = new BigDecimal(this.scaleImage.x).setScale(decPlaces, RoundingMode.HALF_DOWN);
+        this.scaleImage.x = bd.floatValue();
+
+        this.scaleImage.y = (this.gbSize.y / this.gameBoardSize.y) / this.tileSize.y;
+        bd = new BigDecimal(this.scaleImage.y).setScale(decPlaces, RoundingMode.HALF_DOWN);
+        this.scaleImage.y = bd.floatValue();
+
+    }
 
 }

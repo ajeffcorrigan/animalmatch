@@ -58,16 +58,16 @@ public class GameLevelManager {
 
     public void updateGameCell(GameCell gc) {
         for(XmlReader.Element cell : this.currentLvlElement.getChildrenByName("cell")) {
-            if((cell.getInt("row") == gc.getLogicCoordinates().x && cell.getInt("col") == gc.getLogicCoordinates().y) ||
-                    (cell.getInt("row") == -1 && cell.getInt("col") == gc.getLogicCoordinates().y) ||
-                    (cell.getInt("row") == gc.getLogicCoordinates().x && cell.getInt("col") == -1) ||
-                    (cell.getInt("row") == -1 && cell.getInt("col") == -1)) {
+            if((cell.getInt("x") == gc.getLogicCoordinates().x && cell.getInt("y") == gc.getLogicCoordinates().y) ||
+                    (cell.getInt("x") == -1 && cell.getInt("y") == gc.getLogicCoordinates().y) ||
+                    (cell.getInt("x") == gc.getLogicCoordinates().x && cell.getInt("y") == -1) ||
+                    (cell.getInt("x") == -1 && cell.getInt("y") == -1)) {
                 gc.setCanBeOccupied(cell.getBoolean("canoccupy"));
-                for(XmlReader.Element img : cell.getChildrenByName("bg")) {
-                    if(gc.spriteLayerExists(img.getInt("id")) != null) {
+                for(XmlReader.Element imgElement : cell.getChildrenByName("bg")) {
+                    if(gc.spriteLayerExists(imgElement.getInt("id")) != null) {
 
                     } else {
-                        gc.addSpriteLayer(img.getInt("id"),jAssets.getTextureRegion(img.get("img")));
+                        gc.addSpriteLayer(imgElement.getInt("id"),jAssets.getTextureRegion(imgElement.get("img")));
                     }
                 }
             }

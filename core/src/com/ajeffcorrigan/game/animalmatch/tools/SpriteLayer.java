@@ -24,6 +24,7 @@ public class SpriteLayer extends Sprite {
         this.layerLevel = sl;
         this.cellLocation = loc;
         this.setPosition(cellLocation.x,cellLocation.y);
+        this.setFlip(false,true);
     }
 
     public int getLayerLevel() { return layerLevel; }

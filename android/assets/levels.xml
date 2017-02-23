@@ -1,24 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <levels>
-	<level id="1" x="4" y="4">
-		<cell row="-1" col="-1" barrier="0" canoccupy="false">
-			<bg id="0" img="grass_1"/>
+	<level id="1" x="7" y="7">
+		<cell x="0" y="0" barrier="8" canoccupy="false">
+			<bg id="0" img="t_l_grass_dirt"/>
 		</cell>
-		<cell row="2" col="3" barrier="0" canoccupy="false">
+		<cell x="1" y="0" barrier="8" canoccupy="false">
+			<bg id="0" img="t_grass_dirt"/>
+		</cell>
+		<cell x="2" y="0" barrier="8" canoccupy="false">
+			<bg id="0" img="t_grass_dirt"/>
+		</cell>
+		<cell x="3" y="0" barrier="8" canoccupy="false">
+			<bg id="0" img="t_grass_dirt"/>
+		</cell>
+		<cell x="4" y="0" barrier="8" canoccupy="false">
+			<bg id="0" img="t_r_grass_dirt"/>
+		</cell>
+		<cell x="2" y="3" barrier="0" canoccupy="false">
 			<bg id="0" img="grass_0"/>
 		</cell>
-		<cell row="0" col="0" barrier="8" canoccupy="false">
-			<bg id="1" img="lg_box"/>
-			<bg id="0" img="grass_1"/>
-		</cell>
-		<cell row="3" col="1" barrier="8" canoccupy="false">
+		<cell x="3" y="1" barrier="8" canoccupy="false">
 			<bg id="0" img="grass_2"/>
 		</cell>
-		<cell row="1" col="1" barrier="8" canoccupy="false">
+		<cell x="1" y="1" barrier="8" canoccupy="false">
 			<bg id="0" img="grass_0"/>
-			<bg id="1" img="sm_orange_bush"/>
+			<bg id="1" img="giraffe"/>
 		</cell>
-		<cell row="2" col="0" barrier="8" canoccupy="false">
+		<cell x="2" y="0" barrier="8" canoccupy="false">
 			<bg id="0" img="grass_1"/>
 		</cell>
 

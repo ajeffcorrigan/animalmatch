@@ -17,5 +17,7 @@
         <region name="lg_orange_bush" xLoc="2" yLoc="9" code="015a0"></region>
         <region name="sm_green_bush" xLoc="1" yLoc="9" code="015a0"></region>
         <region name="lg_green_bush" xLoc="0" yLoc="9" code="015a0"></region>
+
+        <region name="giraffe" xLoc="0" yLoc="12" code="015a0"></region>
     </texture>
 </texturefiles>

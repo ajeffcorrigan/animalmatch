@@ -47,7 +47,7 @@ public class GamePlayScreen extends ScreenAdapter {
         gamecam.setToOrtho(true);
 
         //Set start location of the game board entity
-        gbLocation = new Vector2(AnimalMatch.gw * .025f, AnimalMatch.gh * .005f);
+        gbLocation = new Vector2(AnimalMatch.gw * .02f, AnimalMatch.gh * .005f);
 
         // Initialize the game level manager object.
         glm = new GameLevelManager();
