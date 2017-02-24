@@ -26,7 +26,7 @@ public class GameAssetManager {
         // Initialize the XML reader.
         reader = new XmlReader();
         // Initialize the file handler.
-        xmlFile = new FileHandle("textures.xml");
+        xmlFile = new FileHandle("base_level.xml");
 
         // Parse file and load root element.
         try { rootElement = reader.parse(xmlFile); } catch (IOException e) { e.printStackTrace(); }
