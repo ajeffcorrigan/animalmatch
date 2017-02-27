@@ -53,7 +53,7 @@ public class GamePlayScreen extends ScreenAdapter {
         // Initialize the game level manager object.
         glm = new GameLevelManager(this.game.gam);
 
-        gameBoard = new GameBoard(gbLocation,glm,new Vector2(this.game.gam.xSize,this.game.gam.ySize));
+        gameBoard = new GameBoard(gbLocation,glm,this.game.gam.getTileSize());
     }
 
     @Override

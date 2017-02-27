@@ -1,6 +1,7 @@
 package com.ajeffcorrigan.game.animalmatch.tools;
 
 import com.ajeffcorrigan.game.animalmatch.gamesystem.GameCell;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.XmlReader;
@@ -15,19 +16,16 @@ public class GameLevelManager {
 
     // Holds the current internal level.
     private int currentInternalLevel;
-    // XML reader
-    private XmlReader reader;
-    // Root element
-    private XmlReader.Element rootElement = null;
-    // Current level branch
-    private XmlReader.Element currentLvlElement = null;
-    // File Handler
-    private FileHandle xmlFile;
-    // Tile Size
+    // Tile Size in pixels
     private Vector2 tileSize;
     // Game Asset Manager object
     private GameAssetManager gam;
-
+    // Level Size in rows and cols
+    private Vector2 levelSize;
+    // Current level XML Reader object
+    private XmlReader reader;
+    // Root Element object
+    private XmlReader.Element rootElement = null;
 
     public GameLevelManager(GameAssetManager gam) {
         // GameAssetManager object
@@ -36,8 +34,6 @@ public class GameLevelManager {
         this.currentInternalLevel = 0;
         // Load the level.
         this.LoadLevel(this.currentInternalLevel);
-        // Populate the initial level's details
-        this.currentLvlElement = rootElement.getChild(currentInternalLevel);
     }
 
     // Load the level file.
@@ -45,11 +41,24 @@ public class GameLevelManager {
         // Construct the level file.
         String levelFile = "level_"+ this.currentInternalLevel +".xml";
         // Initialize the XML reader.
+        // XML reader
         reader = new XmlReader();
         // Initialize the file handler.
-        xmlFile = new FileHandle(levelFile);
+        FileHandle xmlFile = new FileHandle(levelFile);
         // Parse and load root details.
-        try { rootElement = reader.parse(xmlFile); } catch (IOException e) { e.printStackTrace(); }
+        try { this.rootElement = reader.parse(xmlFile); } catch (IOException e) { e.printStackTrace(); }
+        // Set the level size
+        this.setLevelSize(new Vector2(rootElement.getIntAttribute("width"),rootElement.getIntAttribute("height")));
+        // Set the tile size
+        this.setTileSize(new Vector2(rootElement.getIntAttribute("tilewidth"),rootElement.getIntAttribute("tileheight")));
+        // Get sheet name which layers are associated with.
+        String sheetName = rootElement.getChildByName("tileset").getAttribute("name");
+        // Check for texture regions, add if not available.
+        for(XmlReader.Element layerElement : rootElement.getChildrenByName("layer")) {
+            for(XmlReader.Element tileElement : layerElement.getChildByName("data").getChildrenByName("tile")) {
+                this.gam.checkTextureRegion(tileElement.getAttribute("gid"),sheetName);
+            }
+        }
     }
 
     // Get current level for display (not zero based).
@@ -59,31 +68,23 @@ public class GameLevelManager {
     public void setCurrentLevel(int currentLevel) {
         if(currentLevel > 0) {
             this.currentInternalLevel = currentLevel - 1;
-            this.currentLvlElement = rootElement.getChild(currentInternalLevel);
         }
     }
 
     // Get the level's size, by row and column.
-    public Vector2 getLevelSize() {
-        return new Vector2(currentLvlElement.getInt("x"),currentLvlElement.getInt("y"));
-    }
+    public Vector2 getLevelSize() { return this.levelSize; }
+    // Set the level's size
+    private void setLevelSize(Vector2 ls) { this.levelSize = ls; }
 
-    public void updateGameCell(GameCell gc) {
-        for(XmlReader.Element cell : this.currentLvlElement.getChildrenByName("cell")) {
-            if((cell.getInt("x") == gc.getLogicCoordinates().x && cell.getInt("y") == gc.getLogicCoordinates().y) ||
-                    (cell.getInt("x") == -1 && cell.getInt("y") == gc.getLogicCoordinates().y) ||
-                    (cell.getInt("x") == gc.getLogicCoordinates().x && cell.getInt("y") == -1) ||
-                    (cell.getInt("x") == -1 && cell.getInt("y") == -1)) {
-                gc.setCanBeOccupied(cell.getBoolean("canoccupy"));
-                for(XmlReader.Element imgElement : cell.getChildrenByName("bg")) {
-                    if(gc.spriteLayerExists(imgElement.getInt("id")) != null) {
+    // Get the tile size for the map
+    public Vector2 getTileSize() { return this.tileSize; }
+    // Set the tile size for the map
+    private void setTileSize(Vector2 ts) { this.tileSize = ts; }
 
-                    } else {
-                        gc.addSpriteLayer(imgElement.getInt("id"),jAssets.getTextureRegion(imgElement.get("img")));
-                    }
-                }
-            }
-
+    public void setTileGraphics(GameCell gc) {
+        int tileNum = ((int)gc.getLogicCoordinates().x * (int)this.levelSize.x) + (int)gc.getLogicCoordinates().y;
+        for(XmlReader.Element layerElement : rootElement.getChildrenByName("layer")) {
+            gc.addSpriteLayer(layerElement.getIntAttribute("name"),jAssets.getTextureRegion(layerElement.getChildByName("data").getChild(tileNum).getAttribute("gid")));
         }
     }
 

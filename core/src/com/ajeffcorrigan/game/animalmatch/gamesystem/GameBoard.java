@@ -44,7 +44,7 @@ public class GameBoard {
         // Create a blank board with coordinates and cell locations.
         this.CreateBlankBoard();
         // Populate the board with graphics.
-        this.populateBoard();
+        //this.populateBoard();
         // Update the scale of board.
         this.updateScale();
     }
@@ -54,12 +54,13 @@ public class GameBoard {
         for(int x = 0; x < gameBoardSize.x; x++) {
             for(int y = 0; y < gameBoardSize.y; y++) {
                 gameCells.add(new GameCell(new Vector2(x, y),new Vector2(((this.tileSize.x * x) * this.scaleImage.x) + startLoc.x, ((this.tileSize.y * y) * this.scaleImage.y) + startLoc.y)));
+                this.glm.setTileGraphics(gameCells.peek());
             }
         }
     }
 
     // Populates the game board with graphics.
-    private void populateBoard() { for(GameCell gc : gameCells) { this.glm.updateGameCell(gc); } }
+    //private void populateBoard() { for(GameCell gc : gameCells) { this.glm.updateGameCell(gc); } }
 
     // Updates the scale of the board's graphics, should be called if scaleImage variable changes.
     private void updateScale() { for(GameCell gc : gameCells) { gc.updateSpriteScale(scaleImage); } }
