@@ -24,20 +24,32 @@ public class GameLevelManager {
     // File Handler
     private FileHandle xmlFile;
     // Tile Size
-    public int tileSize = 64;
+    private Vector2 tileSize;
+    // Game Asset Manager object
+    private GameAssetManager gam;
 
 
-    public GameLevelManager() {
+    public GameLevelManager(GameAssetManager gam) {
+        // GameAssetManager object
+        this.gam = gam;
+        // Set initial level to zero.
+        this.currentInternalLevel = 0;
+        // Load the level.
+        this.LoadLevel(this.currentInternalLevel);
+        // Populate the initial level's details
+        this.currentLvlElement = rootElement.getChild(currentInternalLevel);
+    }
+
+    // Load the level file.
+    private void LoadLevel(int lvl) {
+        // Construct the level file.
+        String levelFile = "level_"+ this.currentInternalLevel +".xml";
         // Initialize the XML reader.
         reader = new XmlReader();
         // Initialize the file handler.
-        xmlFile = new FileHandle("levels.xml");
+        xmlFile = new FileHandle(levelFile);
         // Parse and load root details.
         try { rootElement = reader.parse(xmlFile); } catch (IOException e) { e.printStackTrace(); }
-        // Set initial level to zero.
-        this.currentInternalLevel = 0;
-        // Populate the initial level's details
-        this.currentLvlElement = rootElement.getChild(currentInternalLevel);
     }
 
     // Get current level for display (not zero based).

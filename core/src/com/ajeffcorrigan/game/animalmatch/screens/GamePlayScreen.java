@@ -3,6 +3,7 @@ package com.ajeffcorrigan.game.animalmatch.screens;
 import com.ajeffcorrigan.game.animalmatch.AnimalMatch;
 import com.ajeffcorrigan.game.animalmatch.gamesystem.GameBoard;
 import com.ajeffcorrigan.game.animalmatch.gamesystem.GameCell;
+import com.ajeffcorrigan.game.animalmatch.tools.GameAssetManager;
 import com.ajeffcorrigan.game.animalmatch.tools.GameLevelManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
@@ -50,7 +51,7 @@ public class GamePlayScreen extends ScreenAdapter {
         gbLocation = new Vector2(AnimalMatch.gw * .02f, AnimalMatch.gh * .005f);
 
         // Initialize the game level manager object.
-        glm = new GameLevelManager();
+        glm = new GameLevelManager(this.game.gam);
 
         gameBoard = new GameBoard(gbLocation,glm,new Vector2(this.game.gam.xSize,this.game.gam.ySize));
     }

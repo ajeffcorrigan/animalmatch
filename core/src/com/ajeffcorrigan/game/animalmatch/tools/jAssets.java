@@ -117,5 +117,9 @@ public class jAssets {
         return tr;
     }
 
+    public static boolean textureRegionExists(String key) {
+        return textureregions.containsKey(key);
+    }
+
 }
 
