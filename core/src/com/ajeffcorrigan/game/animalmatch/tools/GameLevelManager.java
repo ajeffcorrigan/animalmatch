@@ -82,9 +82,12 @@ public class GameLevelManager {
     private void setTileSize(Vector2 ts) { this.tileSize = ts; }
 
     public void setTileGraphics(GameCell gc) {
-        int tileNum = ((int)gc.getLogicCoordinates().x * (int)this.levelSize.x) + (int)gc.getLogicCoordinates().y;
+        int tileNum = (int)gc.getLogicCoordinates().x + ((int)gc.getLogicCoordinates().y * (int)this.levelSize.y);
         for(XmlReader.Element layerElement : rootElement.getChildrenByName("layer")) {
-            gc.addSpriteLayer(layerElement.getIntAttribute("name"),jAssets.getTextureRegion(layerElement.getChildByName("data").getChild(tileNum).getAttribute("gid")));
+            String layerGid = layerElement.getChildByName("data").getChild(tileNum).getAttribute("gid");
+            if(Integer.valueOf(layerGid) >= gam.getFirstGid()) {
+                gc.addSpriteLayer(layerElement.getIntAttribute("name"), jAssets.getTextureRegion(layerGid));
+            }
         }
     }
 

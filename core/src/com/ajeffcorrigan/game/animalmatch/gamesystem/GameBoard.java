@@ -15,6 +15,8 @@ public class GameBoard {
 
     // Array of GameCell objects.
     private Array<GameCell> gameCells;
+    // Array of GameCell objects.
+    private Array<PlayerActor> playerActors;
     // Size of the game board in vector2
     private Vector2 gameBoardSize;
     // Starting location of the game board on the screen.
@@ -42,26 +44,20 @@ public class GameBoard {
         // Set the scale of the board based on board size
         this.setScale();
         // Create a blank board with coordinates and cell locations.
-        this.CreateBlankBoard();
-        // Populate the board with graphics.
-        //this.populateBoard();
+        this.CreateBoard();
         // Update the scale of board.
         this.updateScale();
     }
 
-    private void CreateBlankBoard() {
+    private void CreateBoard() {
         gameCells = new Array<GameCell>();
-        for(int x = 0; x < gameBoardSize.x; x++) {
-            for(int y = 0; y < gameBoardSize.y; y++) {
+        for(int y = 0; y < gameBoardSize.y; y++) {
+            for(int x = 0; x < gameBoardSize.x; x++) {
                 gameCells.add(new GameCell(new Vector2(x, y),new Vector2(((this.tileSize.x * x) * this.scaleImage.x) + startLoc.x, ((this.tileSize.y * y) * this.scaleImage.y) + startLoc.y)));
                 this.glm.setTileGraphics(gameCells.peek());
             }
         }
     }
-
-    // Populates the game board with graphics.
-    //private void populateBoard() { for(GameCell gc : gameCells) { this.glm.updateGameCell(gc); } }
-
     // Updates the scale of the board's graphics, should be called if scaleImage variable changes.
     private void updateScale() { for(GameCell gc : gameCells) { gc.updateSpriteScale(scaleImage); } }
 

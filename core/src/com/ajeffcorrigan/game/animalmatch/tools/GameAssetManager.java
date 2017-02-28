@@ -24,9 +24,11 @@ public class GameAssetManager {
     // number of tiles
     private int numberOfTiles;
     // number of columns
-    private Vector2 sheetLayoutCount;
+    private int sheetCols;
     // Current Sheet Name
     private String sheetName;
+    // First gid value, if lower no associated graphics
+    private int firstGid;
 
     public GameAssetManager() {
 
@@ -43,7 +45,8 @@ public class GameAssetManager {
         this.setSheetName(rootElement.getAttribute("name"));
         this.setTileSize(new Vector2(rootElement.getIntAttribute("tilewidth"),rootElement.getIntAttribute("tileheight")));
         this.setNumberOfTiles(rootElement.getIntAttribute("tilecount"));
-        this.setSheetLayoutCount(rootElement.getIntAttribute("columns"));
+        this.setSheetCols(rootElement.getIntAttribute("columns"));
+        this.setFirstGid(rootElement.getIntAttribute("firstgid"));
 
         // Load texture file and name it.
         jAssets.loadTextureAs(this.sheetName, rootElement.getChildByName("image").getAttribute("source"));
@@ -51,20 +54,15 @@ public class GameAssetManager {
 
     public void checkTextureRegion(String tR, String sN) {
         if(this.sheetName.equalsIgnoreCase(sN)) {
-            if(!jAssets.textureRegionExists(tR)) {
-                Vector2 regLocation = new Vector2(0,0);
-                int startRegion = 1;
-                for(int y = 0; y <= this.sheetLayoutCount.y; y++) {
-                    for(int x = 0; x <= this.sheetLayoutCount.x; x++) {
-                        if(startRegion == Integer.valueOf(tR)) {
-                            regLocation.set(x,y);
-                            break;
-                        }
-                        startRegion++;
-                    }
-                    if(startRegion == Integer.valueOf(tR)) { break; }
+            if(Integer.valueOf(tR) >= this.firstGid) {
+                if(!jAssets.textureRegionExists(tR)) {
+                    // find which row the texture is on
+                    int rowLoc = Integer.valueOf(tR) / this.sheetCols;
+                    // find column position based on row
+                    int colLoc = (Integer.valueOf(tR) - (this.sheetCols * rowLoc)) - 1;
+                    // Create texture region based on file.
+                    jAssets.createTextureRegion(tR,this.sheetName,(int)(colLoc * this.tileSize.x),(int)(rowLoc * this.tileSize.y),(int)this.tileSize.x,(int)this.tileSize.y);
                 }
-                jAssets.createTextureRegion(tR,this.sheetName,(int)(regLocation.x * this.tileSize.x),(int)(regLocation.y * this.tileSize.y),(int)this.tileSize.x,(int)this.tileSize.y);
             }
         } else {
             Gdx.app.debug(this.getClass().getSimpleName(), "ERROR - Current sheet does not match.");
@@ -86,11 +84,14 @@ public class GameAssetManager {
     // Set the current sheetname
     private void setSheetName(String s) { this.sheetName = s; }
 
-    // Get the sheet matrix layout, nubmer of columns and rows.
-    public Vector2 getSheetLayoutCount() { return sheetLayoutCount; }
-    // Set the sheet matrix
-    private void setSheetLayoutCount(int cCount) {
-        float rCount = this.numberOfTiles / cCount;
-        this.sheetLayoutCount = new Vector2(cCount,rCount);
-    }
+    // Get the number of columns per row.
+    public int getSheetCols() { return sheetCols; }
+    // Set the number of columns per row.
+    private void setSheetCols(int sheetCols) { this.sheetCols = sheetCols; }
+
+    public int getFirstGid() { return firstGid; }
+    /**
+     * @param firstGid
+     */
+    private void setFirstGid(int firstGid) { this.firstGid = firstGid; }
 }
