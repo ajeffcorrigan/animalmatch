@@ -3,7 +3,10 @@ package com.ajeffcorrigan.game.animalmatch.gamesystem;
 import com.ajeffcorrigan.game.animalmatch.AnimalMatch;
 import com.ajeffcorrigan.game.animalmatch.tools.GameLevelManager;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
@@ -29,6 +32,8 @@ public class GameBoard {
     private Vector2 scaleImage = new Vector2(1f,1f);
     // Game Board size
     private Vector2 gbSize;
+    // Array of rectangle bounds (non passable)
+    private Array<Rectangle> nonPassBounds;
 
     public GameBoard(Vector2 sl, GameLevelManager glm, Vector2 tSz) {
         // Start location of the game board.
@@ -45,27 +50,45 @@ public class GameBoard {
         this.setScale();
         // Create a blank board with coordinates and cell locations.
         this.CreateBoard();
-        // Update the scale of board.
-        this.updateScale();
     }
 
+    // Create a new board based on the size of the map.
     private void CreateBoard() {
         gameCells = new Array<GameCell>();
         for(int y = 0; y < gameBoardSize.y; y++) {
             for(int x = 0; x < gameBoardSize.x; x++) {
                 gameCells.add(new GameCell(new Vector2(x, y),new Vector2(((this.tileSize.x * x) * this.scaleImage.x) + startLoc.x, ((this.tileSize.y * y) * this.scaleImage.y) + startLoc.y)));
                 this.glm.setTileGraphics(gameCells.peek());
+                gameCells.peek().updateSpriteScale(scaleImage);
             }
         }
+        // Get the non-passable areas.
+        nonPassBounds = glm.getNonPassBounds(startLoc, scaleImage);
+
     }
+
     // Updates the scale of the board's graphics, should be called if scaleImage variable changes.
     private void updateScale() { for(GameCell gc : gameCells) { gc.updateSpriteScale(scaleImage); } }
 
     // Draws the board to the sprite batch.
     public void drawBoard(SpriteBatch sb) {
-        for(GameCell gc : gameCells) {
-            gc.drawAll(sb);
-        }
+        // Draw background
+        for(GameCell gc : gameCells) { gc.drawBackground(sb); }
+        // Draw player
+        // Draw foreground
+        for(GameCell gc : gameCells) { gc.drawForeground(sb); }
+    }
+
+    // Draw the bounds
+    public void drawBounds(ShapeRenderer sr) {
+        sr.begin(ShapeRenderer.ShapeType.Line);
+        sr.setColor(Color.BLACK);
+        for(Rectangle r : nonPassBounds) { sr.rect(r.getX(),r.getY(),r.getWidth(),r.getHeight()); }
+        sr.line(startLoc,new Vector2(startLoc.x,startLoc.y + gbSize.y));
+        sr.line(startLoc,new Vector2(startLoc.x + gbSize.x,startLoc.y));
+        sr.line(new Vector2(startLoc.x + gbSize.x, startLoc.y),new Vector2(startLoc.x + gbSize.x, startLoc.y + gbSize.y));
+        sr.line(new Vector2(startLoc.x, startLoc.y + gbSize.y),new Vector2(startLoc.x + gbSize.x, startLoc.y + gbSize.y));
+        sr.end();
     }
 
     public Vector2 getCellLocation(Vector2 xyLoc) {

@@ -1,16 +1,13 @@
 package com.ajeffcorrigan.game.animalmatch.tools;
 
 import com.ajeffcorrigan.game.animalmatch.gamesystem.GameCell;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.XmlReader;
 
 import java.io.IOException;
-
-/**
- * Created by jacorrigan on 11/25/2016.
- */
 
 public class GameLevelManager {
 
@@ -81,6 +78,7 @@ public class GameLevelManager {
     // Set the tile size for the map
     private void setTileSize(Vector2 ts) { this.tileSize = ts; }
 
+    // Sends the tile graphics code to the game cell for processing.
     public void setTileGraphics(GameCell gc) {
         int tileNum = (int)gc.getLogicCoordinates().x + ((int)gc.getLogicCoordinates().y * (int)this.levelSize.y);
         for(XmlReader.Element layerElement : rootElement.getChildrenByName("layer")) {
@@ -89,6 +87,15 @@ public class GameLevelManager {
                 gc.addSpriteLayer(layerElement.getIntAttribute("name"), jAssets.getTextureRegion(layerGid));
             }
         }
+    }
+
+    // Get the rectangular bounds for non passable areas.
+    public Array<Rectangle> getNonPassBounds(Vector2 sl, Vector2 sc) {
+        Array<Rectangle> npb = new Array<Rectangle>();
+        for(XmlReader.Element objects : rootElement.getChildByName("objectgroup").getChildrenByName("object")) {
+            npb.add(new Rectangle((objects.getFloatAttribute("x") * sc.x) + sl.x, (objects.getFloatAttribute("y") * sc.y) + sl.y, objects.getFloatAttribute("width") * sc.x, objects.getFloatAttribute("height") * sc.y ));
+        }
+        return npb;
     }
 
 }

@@ -1,17 +1,11 @@
 package com.ajeffcorrigan.game.animalmatch.gamesystem;
 
 import com.ajeffcorrigan.game.animalmatch.tools.SpriteLayer;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-
-/**
- * Created by admin on 10/6/2016.
- */
 
 public class GameCell {
 
@@ -35,22 +29,25 @@ public class GameCell {
         this.screenLocation = sl;
         this.canBeOccupied = true;
         this.bgLayer = new Array<SpriteLayer>();
+        this.fgLayer = new Array<SpriteLayer>();
     }
 
+    // Draw the background layers with spritebatch
     public void drawBackground(SpriteBatch sb) {
-        for(SpriteLayer sl : bgLayer) {
-            sl.draw(sb);
-        }
+        for(SpriteLayer sl : bgLayer) { sl.draw(sb); }
+    }
+    // Draw the foreground layers with spritebatch
+    public void drawForeground(SpriteBatch sb) {
+        for(SpriteLayer sl : fgLayer) { sl.draw(sb); }
     }
 
+    // Update the sprite scale on background and foreground layers.
     public void updateSpriteScale(Vector2 sImg) {
-        for(SpriteLayer sl : bgLayer) {
-            //sl.setScale(sImg.x,sImg.y);
-            sl.setSize(sl.getWidth() * sImg.x,sl.getHeight() * sImg.y);
-        }
+        for(SpriteLayer sl : bgLayer) { sl.setSize(sl.getWidth() * sImg.x,sl.getHeight() * sImg.y); }
+        for(SpriteLayer sl : fgLayer) { sl.setSize(sl.getWidth() * sImg.x,sl.getHeight() * sImg.y); }
     }
 
-    public void drawForeground() {}
+
 
     public void drawAll(SpriteBatch sb) {
         drawBackground(sb);
@@ -70,9 +67,16 @@ public class GameCell {
     public boolean isCanBeOccupied() { return canBeOccupied; }
     public void setCanBeOccupied(boolean canBeOccupied) { this.canBeOccupied = canBeOccupied; }
 
-    public void addSpriteLayer(int lev, TextureRegion tx) {
-        bgLayer.add(new SpriteLayer(lev, new Sprite(tx), this.screenLocation));
-        Gdx.app.debug(this.getClass().getSimpleName(), "Exiting addSpriteLayer function.");
+    // Adds a new sprite layer, levelCode decides if background or foreground
+    public void addSpriteLayer(int levelCode, TextureRegion tx) {
+        // Background items and ground level items.
+        if(levelCode <= 2) {
+            bgLayer.add(new SpriteLayer(levelCode, new Sprite(tx), this.screenLocation));
+        }
+        // Foreground items, generally "above" player sprite.
+        if(levelCode > 2) {
+            fgLayer.add(new SpriteLayer(levelCode, new Sprite(tx), this.screenLocation));
+        }
     }
 
     public SpriteLayer spriteLayerExists(int id) {
