@@ -1,12 +1,14 @@
 package com.ajeffcorrigan.game.animalmatch.tools;
 
 import com.ajeffcorrigan.game.animalmatch.gamesystem.GameCell;
+import com.ajeffcorrigan.game.animalmatch.gamesystem.PlayerActor;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.XmlReader;
-
 import java.io.IOException;
 
 public class GameLevelManager {
@@ -82,11 +84,40 @@ public class GameLevelManager {
     public void setTileGraphics(GameCell gc) {
         int tileNum = (int)gc.getLogicCoordinates().x + ((int)gc.getLogicCoordinates().y * (int)this.levelSize.y);
         for(XmlReader.Element layerElement : rootElement.getChildrenByName("layer")) {
-            String layerGid = layerElement.getChildByName("data").getChild(tileNum).getAttribute("gid");
-            if(Integer.valueOf(layerGid) >= gam.getFirstGid()) {
-                gc.addSpriteLayer(layerElement.getIntAttribute("name"), jAssets.getTextureRegion(layerGid));
+            if(!layerElement.getAttribute("name").equalsIgnoreCase("playerActor")) {
+                String layerGid = layerElement.getChildByName("data").getChild(tileNum).getAttribute("gid");
+                if(Integer.valueOf(layerGid) >= gam.getFirstGid()) {
+                    gc.addSpriteLayer(layerElement.getIntAttribute("name"), jAssets.getTextureRegion(layerGid));
+                }
             }
         }
+    }
+
+    public boolean playerExists(GameCell gc) {
+        boolean retVal = false;
+        int tileNum = (int)gc.getLogicCoordinates().x + ((int)gc.getLogicCoordinates().y * (int)this.levelSize.y);
+        for(XmlReader.Element layerElement : rootElement.getChildrenByNameRecursively("layer")) {
+            if(layerElement.getAttribute("name").equalsIgnoreCase("playerActor")) {
+                String layerGid = layerElement.getChildByName("data").getChild(tileNum).getAttribute("gid");
+                if(Integer.valueOf(layerGid) >= gam.getFirstGid()) {
+                    retVal = true;
+                    break;
+                }
+            }
+        }
+        return retVal;
+    }
+
+    public PlayerActor setPlayerActor(GameCell gc, Vector2 sc) {
+        int tileNum = (int)gc.getLogicCoordinates().x + ((int)gc.getLogicCoordinates().y * (int)this.levelSize.y);
+        String layerGid = "0";
+        for(XmlReader.Element layerElement : rootElement.getChildrenByNameRecursively("layer")) {
+            if(layerElement.getAttribute("name").equalsIgnoreCase("playerActor")) {
+                layerGid = layerElement.getChildByName("data").getChild(tileNum).getAttribute("gid");
+                break;
+            }
+        }
+        return new PlayerActor(new Sprite(jAssets.getTextureRegion(layerGid)),gc.getScreenLocation(),sc);
     }
 
     // Get the rectangular bounds for non passable areas.

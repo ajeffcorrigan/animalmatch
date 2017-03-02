@@ -34,6 +34,8 @@ public class GameBoard {
     private Vector2 gbSize;
     // Array of rectangle bounds (non passable)
     private Array<Rectangle> nonPassBounds;
+    // Game board bound
+    private Rectangle gbBound;
 
     public GameBoard(Vector2 sl, GameLevelManager glm, Vector2 tSz) {
         // Start location of the game board.
@@ -46,6 +48,10 @@ public class GameBoard {
         this.tileSize = tSz;
         // Board size.
         this.gbSize = new Vector2(AnimalMatch.gw - ((AnimalMatch.gw * .02f) * 2), AnimalMatch.gh - (AnimalMatch.gh * .30f));
+        // Initialize the actors
+        this.playerActors = new Array<PlayerActor>();
+        //Initialize the Game Board bounds.
+        this.gbBound = new Rectangle(sl.x,sl.y,gbSize.x,gbSize.y);
         // Set the scale of the board based on board size
         this.setScale();
         // Create a blank board with coordinates and cell locations.
@@ -65,6 +71,12 @@ public class GameBoard {
         // Get the non-passable areas.
         nonPassBounds = glm.getNonPassBounds(startLoc, scaleImage);
 
+        // Set player actors starting position based on cell location.
+        for (GameCell gc : gameCells) {
+            if(glm.playerExists(gc)) {
+                playerActors.add(glm.setPlayerActor(gc,scaleImage));
+            }
+        }
     }
 
     // Updates the scale of the board's graphics, should be called if scaleImage variable changes.
@@ -75,6 +87,7 @@ public class GameBoard {
         // Draw background
         for(GameCell gc : gameCells) { gc.drawBackground(sb); }
         // Draw player
+        for(PlayerActor pa : playerActors) { pa.draw(sb); }
         // Draw foreground
         for(GameCell gc : gameCells) { gc.drawForeground(sb); }
     }
@@ -117,5 +130,14 @@ public class GameBoard {
         this.scaleImage.y = bd.floatValue();
 
     }
+
+    // Return the game board bounds
+    public Rectangle getGbBound() { return gbBound; }
+    // Return the player actor array
+    public Array<PlayerActor> getPlayerActors() { return this.playerActors; }
+    // If player is selected, unselect other players
+    
+
+
 
 }

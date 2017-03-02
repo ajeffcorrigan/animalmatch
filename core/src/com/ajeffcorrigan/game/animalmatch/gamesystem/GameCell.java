@@ -19,6 +19,8 @@ public class GameCell {
     private Array<SpriteLayer> fgLayer;
     // Can be occupied by player
     private boolean canBeOccupied;
+    // Player Actor object
+    private PlayerActor actor;
 
     public GameCell(Vector2 lc) {
         this.logicCoordinates = new Vector2(lc);
@@ -40,14 +42,13 @@ public class GameCell {
     public void drawForeground(SpriteBatch sb) {
         for(SpriteLayer sl : fgLayer) { sl.draw(sb); }
     }
+    // Draw actor
 
     // Update the sprite scale on background and foreground layers.
     public void updateSpriteScale(Vector2 sImg) {
         for(SpriteLayer sl : bgLayer) { sl.setSize(sl.getWidth() * sImg.x,sl.getHeight() * sImg.y); }
         for(SpriteLayer sl : fgLayer) { sl.setSize(sl.getWidth() * sImg.x,sl.getHeight() * sImg.y); }
     }
-
-
 
     public void drawAll(SpriteBatch sb) {
         drawBackground(sb);
