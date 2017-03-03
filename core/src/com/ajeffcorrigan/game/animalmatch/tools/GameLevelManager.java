@@ -117,6 +117,7 @@ public class GameLevelManager {
                 break;
             }
         }
+        for(XmlReader Element : rootElement.getChild() )
         return new PlayerActor(new Sprite(jAssets.getTextureRegion(layerGid)),gc.getScreenLocation(),sc);
     }
 

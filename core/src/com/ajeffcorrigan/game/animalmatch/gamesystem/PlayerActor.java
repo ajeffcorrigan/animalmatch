@@ -12,6 +12,8 @@ public class PlayerActor extends Sprite{
     private Rectangle playerBounds;
     // Player state.
     private boolean playerSelected;
+    // Player type
+    private int playerType;
 
     public PlayerActor(Sprite sprite, Vector2 loc, Vector2 scaler) {
         super(sprite);
