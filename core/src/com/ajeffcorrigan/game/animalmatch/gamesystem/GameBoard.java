@@ -87,9 +87,18 @@ public class GameBoard {
         // Draw background
         for(GameCell gc : gameCells) { gc.drawBackground(sb); }
         // Draw player
-        for(PlayerActor pa : playerActors) { pa.draw(sb); }
+        for(PlayerActor pa : playerActors) {
+            if (pa.isDrawPlayer()) { pa.draw(sb); }
+        }
         // Draw foreground
         for(GameCell gc : gameCells) { gc.drawForeground(sb); }
+    }
+
+    public void update(float delta) {
+        // Draw player
+        for(PlayerActor pa : playerActors) {
+            if (pa.isPlayerMoving()) { pa.update(delta); }
+        }
     }
 
     // Draw the bounds
@@ -136,8 +145,5 @@ public class GameBoard {
     // Return the player actor array
     public Array<PlayerActor> getPlayerActors() { return this.playerActors; }
     // If player is selected, unselect other players
-    
-
-
 
 }

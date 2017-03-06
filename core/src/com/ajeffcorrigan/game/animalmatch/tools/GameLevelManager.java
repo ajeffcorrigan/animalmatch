@@ -110,15 +110,27 @@ public class GameLevelManager {
 
     public PlayerActor setPlayerActor(GameCell gc, Vector2 sc) {
         int tileNum = (int)gc.getLogicCoordinates().x + ((int)gc.getLogicCoordinates().y * (int)this.levelSize.y);
-        String layerGid = "0";
+        int layerGid = 0;
         for(XmlReader.Element layerElement : rootElement.getChildrenByNameRecursively("layer")) {
             if(layerElement.getAttribute("name").equalsIgnoreCase("playerActor")) {
-                layerGid = layerElement.getChildByName("data").getChild(tileNum).getAttribute("gid");
+                layerGid = layerElement.getChildByName("data").getChild(tileNum).getIntAttribute("gid");
                 break;
             }
         }
-        for(XmlReader Element : rootElement.getChild() )
-        return new PlayerActor(new Sprite(jAssets.getTextureRegion(layerGid)),gc.getScreenLocation(),sc);
+        int tileGid = layerGid - 1;
+        int tileType = 0;
+        for(XmlReader.Element tileElement : rootElement.getChildByName("tileset").getChildrenByNameRecursively("tile") ) {
+            if(tileElement.getIntAttribute("id") == tileGid) {
+                for(XmlReader.Element tileProperties : tileElement.getChild(0).getChildrenByNameRecursively("property")) {
+                    if(tileProperties.getAttribute("name").equalsIgnoreCase("type")) {
+                        tileType = tileProperties.getIntAttribute("value");
+                    }
+                    break;
+                }
+            }
+        }
+
+        return new PlayerActor(layerGid,gc.getScreenLocation(),sc,tileType);
     }
 
     // Get the rectangular bounds for non passable areas.

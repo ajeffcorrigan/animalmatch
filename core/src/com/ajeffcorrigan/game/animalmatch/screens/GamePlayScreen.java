@@ -5,6 +5,7 @@ import com.ajeffcorrigan.game.animalmatch.gamesystem.GameBoard;
 import com.ajeffcorrigan.game.animalmatch.gamesystem.PlayerActor;
 import com.ajeffcorrigan.game.animalmatch.tools.GameLevelManager;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
@@ -61,6 +62,8 @@ public class GamePlayScreen extends ScreenAdapter implements InputProcessor {
 
     @Override
     public void render(float delta) {
+        update(delta);
+
         super.render(delta);
 
         //Clear the game screen
@@ -74,6 +77,10 @@ public class GamePlayScreen extends ScreenAdapter implements InputProcessor {
 
         shapeRenderer.setProjectionMatrix(gamecam.combined);
         gameBoard.drawBounds(shapeRenderer);
+    }
+
+    private void update(float delta) {
+        gameBoard.update(delta);
     }
 
     @Override
@@ -109,11 +116,31 @@ public class GamePlayScreen extends ScreenAdapter implements InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
+        for(PlayerActor pa : gameBoard.getPlayerActors()) {
+            if(pa.isPlayerSelected() && !pa.isPlayerMoving()) {
+                switch (keycode) {
+                    case Input.Keys.UP:
+                        pa.setMoveDirection(new Vector2(0,-1));
+                        break;
+                    case Input.Keys.DOWN:
+                        pa.setMoveDirection(new Vector2(0,1));
+                        break;
+                    case Input.Keys.LEFT:
+                        pa.setMoveDirection(new Vector2(-1,0));
+                        break;
+                    case Input.Keys.RIGHT:
+                        pa.setMoveDirection(new Vector2(1,0));
+                        break;
+                }
+
+            }
+        }
         return false;
     }
 
     @Override
     public boolean keyUp(int keycode) {
+
         return false;
     }
 
@@ -131,10 +158,11 @@ public class GamePlayScreen extends ScreenAdapter implements InputProcessor {
                 if(pa.getPlayerBounds().contains(screenX,screenY)) {
                     if(pa.isPlayerSelected()) {
                         pa.setPlayerSelected(false);
-                        Gdx.app.debug(this.getClass().getSimpleName(), "PlayerActor is unselected.");
+                        pa.stopMoving();
+                        Gdx.app.debug(this.getClass().getSimpleName(), "PlayerActor type "+ pa.getPlayerType() +" is unselected.");
                     } else {
                         pa.setPlayerSelected(true);
-                        Gdx.app.debug(this.getClass().getSimpleName(), "PlayerActor is selected.");
+                        Gdx.app.debug(this.getClass().getSimpleName(), "PlayerActor type "+ pa.getPlayerType() +" is selected.");
                     }
 
                 }
