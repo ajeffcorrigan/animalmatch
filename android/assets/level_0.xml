@@ -4,6 +4,27 @@
   <image source="RPGpack_sheet.png" width="1280" height="832"/>
   <tile id="240">
    <properties>
+    <property name="outline" type="bool" value="true"/>
+    <property name="type" type="int" value="2"/>
+   </properties>
+  </tile>
+  <tile id="241">
+   <properties>
+    <property name="type" type="int" value="2"/>
+   </properties>
+  </tile>
+  <tile id="242">
+   <properties>
+    <property name="type" type="int" value="3"/>
+   </properties>
+  </tile>
+  <tile id="243">
+   <properties>
+    <property name="type" type="int" value="3"/>
+   </properties>
+  </tile>
+  <tile id="244">
+   <properties>
     <property name="type" type="int" value="2"/>
    </properties>
   </tile>
@@ -134,21 +155,21 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="243"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="242"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="245"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="241"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="241"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="244"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>

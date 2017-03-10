@@ -2,6 +2,7 @@ package com.ajeffcorrigan.game.animalmatch.gamesystem;
 
 import com.ajeffcorrigan.game.animalmatch.tools.jAssets;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g3d.particles.influencers.DynamicsModifier;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
@@ -24,15 +25,27 @@ public class PlayerActor extends Sprite{
     private boolean playerMoving;
     // Current move direction
     private Vector2 moveDirection;
+    // Center of bounds
+    private Vector2 centerBounds;
+    // Player can be played?
+    private boolean playableActor;
+    // Unselected textureRegion id
+    private String unSelectTexture;
+    // Selected textureRegion id
+    private String selectedTexture;
 
-    public PlayerActor(int tg, Vector2 loc, Vector2 scaler, int type) {
-        super(new Sprite(jAssets.getTextureRegion(String.valueOf(tg))));
-        this.tileId = tg;
+
+    public PlayerActor(int unSelTex, Vector2 loc, Vector2 scaler, int type, int selTex) {
+        super(new Sprite(jAssets.getTextureRegion(String.valueOf(unSelTex))));
+        this.unSelectTexture = String.valueOf(unSelTex);
+        this.selectedTexture = String.valueOf(selTex);
+        this.tileId = unSelTex;
         this.boardLocation = loc;
         this.setPosition(boardLocation.x,boardLocation.y);
         this.setSize(this.getWidth() * scaler.x, this.getHeight() * scaler.y);
         this.setFlip(false,true);
         this.playerBounds = new Rectangle(boardLocation.x,boardLocation.y,getWidth(),getHeight());
+        this.centerBounds = new Vector2(playerBounds.getX() + (playerBounds.getWidth() / 2), playerBounds.getY() + (playerBounds.getHeight() / 2));
         this.playerType = type;
         this.playerSelected = false;
         this.drawPlayer = true;
@@ -69,8 +82,15 @@ public class PlayerActor extends Sprite{
         this.setPosition(this.getX() + (this.moveDirection.x * delta * this.moveSpeed),this.getY() + (this.moveDirection.y * delta * this.moveSpeed));
         this.updateBounds();
     }
-
+    // Updates the player bounds.
     public void updateBounds() {
         this.playerBounds.setPosition(this.getX(),this.getY());
+        setCenterBounds();
     }
+    // Updates the center point of the player
+    private void setCenterBounds() {
+        this.centerBounds.set(playerBounds.getX() + (playerBounds.getWidth() / 2), playerBounds.getY() + (playerBounds.getHeight() / 2));
+    }
+    // Gets the center coordinates of the bounding box.
+    public Vector2 getCenterBounds() { return centerBounds; }
 }

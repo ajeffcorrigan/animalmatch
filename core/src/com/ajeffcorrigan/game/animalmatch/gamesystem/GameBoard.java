@@ -94,10 +94,31 @@ public class GameBoard {
         for(GameCell gc : gameCells) { gc.drawForeground(sb); }
     }
 
+    // Run through updates.
     public void update(float delta) {
         // Draw player
         for(PlayerActor pa : playerActors) {
-            if (pa.isPlayerMoving()) { pa.update(delta); }
+            if (pa.isPlayerMoving()) {
+                // Check bounds of board for collision
+                if(!gbBound.contains(pa.getPlayerBounds().getX(),pa.getPlayerBounds().getY()) || !gbBound.contains(pa.getPlayerBounds().getX()+pa.getPlayerBounds().getWidth(),pa.getPlayerBounds().getY()+pa.getPlayerBounds().getHeight())) {
+                    pa.stopMoving();
+                }
+                // Check bounds of non pass zones
+                for(Rectangle npB : nonPassBounds) {
+                    if(npB.overlaps(pa.getPlayerBounds())) { pa.stopMoving(); }
+                }
+                // If the bounds have been touched, player is no longer moving, update coordinates.
+                if(!pa.isPlayerMoving()) {
+                    for(GameCell gc : gameCells) {
+                        if(new Rectangle(gc.getScreenLocation().x,gc.getScreenLocation().y,this.tileSize.x,this.tileSize.y).contains(pa.getCenterBounds())) {
+                            pa.setPosition(gc.getScreenLocation().x,gc.getScreenLocation().y);
+                            pa.updateBounds();
+                        }
+                    }
+                }
+                // Update player.
+                pa.update(delta);
+            }
         }
     }
 
@@ -106,6 +127,9 @@ public class GameBoard {
         sr.begin(ShapeRenderer.ShapeType.Line);
         sr.setColor(Color.BLACK);
         for(Rectangle r : nonPassBounds) { sr.rect(r.getX(),r.getY(),r.getWidth(),r.getHeight()); }
+        for(PlayerActor pa : playerActors) {
+            sr.rect(pa.getPlayerBounds().getX(),pa.getPlayerBounds().getY(),pa.getPlayerBounds().getWidth(),pa.getPlayerBounds().getHeight());
+        }
         sr.line(startLoc,new Vector2(startLoc.x,startLoc.y + gbSize.y));
         sr.line(startLoc,new Vector2(startLoc.x + gbSize.x,startLoc.y));
         sr.line(new Vector2(startLoc.x + gbSize.x, startLoc.y),new Vector2(startLoc.x + gbSize.x, startLoc.y + gbSize.y));
