@@ -61,22 +61,20 @@ public class GameBoard {
     // Create a new board based on the size of the map.
     private void CreateBoard() {
         gameCells = new Array<GameCell>();
+        // Creates the initial board array and sets graphics and scale.
         for(int y = 0; y < gameBoardSize.y; y++) {
             for(int x = 0; x < gameBoardSize.x; x++) {
                 gameCells.add(new GameCell(new Vector2(x, y),new Vector2(((this.tileSize.x * x) * this.scaleImage.x) + startLoc.x, ((this.tileSize.y * y) * this.scaleImage.y) + startLoc.y)));
                 this.glm.setTileGraphics(gameCells.peek());
                 gameCells.peek().updateSpriteScale(scaleImage);
+                // Check if actor exists at this location.
+                if(glm.playerExists(gameCells.peek())) {
+                    playerActors.add(glm.setPlayerActor(gameCells.peek(),scaleImage));
+                }
             }
         }
         // Get the non-passable areas.
         nonPassBounds = glm.getNonPassBounds(startLoc, scaleImage);
-
-        // Set player actors starting position based on cell location.
-        for (GameCell gc : gameCells) {
-            if(glm.playerExists(gc)) {
-                playerActors.add(glm.setPlayerActor(gc,scaleImage));
-            }
-        }
     }
 
     // Updates the scale of the board's graphics, should be called if scaleImage variable changes.

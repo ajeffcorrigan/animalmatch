@@ -1,31 +1,127 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="6" height="6" tilewidth="64" tileheight="64" nextobjectid="15">
- <tileset firstgid="1" name="rpgtileset" tilewidth="64" tileheight="64" tilecount="260" columns="20">
-  <image source="RPGpack_sheet.png" width="1280" height="832"/>
-  <tile id="240">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="6" height="6" tilewidth="64" tileheight="64" nextobjectid="9">
+ <tileset firstgid="1" name="object_spritesheet" tilewidth="64" tileheight="64" tilecount="260" columns="20">
+  <image source="object_spritesheet.png" width="1280" height="832"/>
+ </tileset>
+ <tileset firstgid="261" name="animal_spritesheet" tilewidth="64" tileheight="64" tilecount="40" columns="10">
+  <image source="animal_spritesheet.png" width="640" height="256"/>
+  <tile id="0">
    <properties>
-    <property name="outline" type="bool" value="true"/>
-    <property name="type" type="int" value="2"/>
+    <property name="name" value="elephant"/>
+    <property name="playable" type="bool" value="true"/>
    </properties>
   </tile>
-  <tile id="241">
+  <tile id="1">
    <properties>
-    <property name="type" type="int" value="2"/>
+    <property name="name" value="giraffe"/>
+    <property name="playable" type="bool" value="true"/>
    </properties>
   </tile>
-  <tile id="242">
+  <tile id="2">
    <properties>
-    <property name="type" type="int" value="3"/>
+    <property name="name" value="hippo"/>
+    <property name="playable" type="bool" value="true"/>
    </properties>
   </tile>
-  <tile id="243">
+  <tile id="3">
    <properties>
-    <property name="type" type="int" value="3"/>
+    <property name="name" value="monkey"/>
    </properties>
   </tile>
-  <tile id="244">
+  <tile id="4">
    <properties>
-    <property name="type" type="int" value="2"/>
+    <property name="name" value="panda"/>
+   </properties>
+  </tile>
+  <tile id="5">
+   <properties>
+    <property name="name" value="parrot"/>
+   </properties>
+  </tile>
+  <tile id="6">
+   <properties>
+    <property name="name" value="penguin"/>
+   </properties>
+  </tile>
+  <tile id="7">
+   <properties>
+    <property name="name" value="pig"/>
+   </properties>
+  </tile>
+  <tile id="8">
+   <properties>
+    <property name="name" value="rabbit"/>
+   </properties>
+  </tile>
+  <tile id="9">
+   <properties>
+    <property name="name" value="snake"/>
+   </properties>
+  </tile>
+  <tile id="10">
+   <properties>
+    <property name="name" value="elephant"/>
+    <property name="playable" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="11">
+   <properties>
+    <property name="name" value="giraffe"/>
+    <property name="playable" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="12">
+   <properties>
+    <property name="name" value="hippo"/>
+    <property name="playable" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="13">
+   <properties>
+    <property name="name" value="monkey"/>
+   </properties>
+  </tile>
+  <tile id="14">
+   <properties>
+    <property name="name" value="panda"/>
+   </properties>
+  </tile>
+  <tile id="15">
+   <properties>
+    <property name="name" value="parrot"/>
+   </properties>
+  </tile>
+  <tile id="20">
+   <properties>
+    <property name="name" value="elephant"/>
+    <property name="playable" type="bool" value="false"/>
+   </properties>
+  </tile>
+  <tile id="21">
+   <properties>
+    <property name="name" value="giraffe"/>
+    <property name="playable" type="bool" value="false"/>
+   </properties>
+  </tile>
+  <tile id="22">
+   <properties>
+    <property name="name" value="hippo"/>
+    <property name="playable" type="bool" value="false"/>
+   </properties>
+  </tile>
+  <tile id="23">
+   <properties>
+    <property name="name" value="monkey"/>
+   </properties>
+  </tile>
+  <tile id="24">
+   <properties>
+    <property name="name" value="panda"/>
+   </properties>
+  </tile>
+  <tile id="25">
+   <properties>
+    <property name="name" value="parrot"/>
    </properties>
   </tile>
  </tileset>
@@ -93,13 +189,13 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="36"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -119,7 +215,13 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="181"/>
+   <tile gid="183"/>
+   <tile gid="0"/>
+   <tile gid="189"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -141,56 +243,22 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
   </data>
  </layer>
- <layer name="playerActor" width="6" height="6">
-  <data>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="243"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="242"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="245"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="244"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-  </data>
- </layer>
+ <objectgroup name="non_passable">
+  <object id="4" x="64" y="128" width="192" height="192"/>
+  <object id="5" x="128" y="64" width="64" height="64"/>
+  <object id="6" x="256" y="64" width="64" height="64"/>
+  <object id="7" x="256" y="256" width="64" height="64"/>
+ </objectgroup>
  <layer name="3" width="6" height="6">
   <data>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -221,6 +289,40 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+  </data>
+ </layer>
+ <layer name="playerActor" width="6" height="6">
+  <data>
+   <tile gid="263"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="283"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="261"/>
+   <tile gid="0"/>
+   <tile gid="281"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -229,9 +331,4 @@
    <tile gid="0"/>
   </data>
  </layer>
- <objectgroup name="nonpass">
-  <object id="8" x="256" y="192" width="64" height="64"/>
-  <object id="9" x="128" y="64" width="64" height="64"/>
-  <object id="10" x="64" y="128" width="192" height="192"/>
- </objectgroup>
 </map>

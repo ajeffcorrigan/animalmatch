@@ -33,7 +33,17 @@ public class PlayerActor extends Sprite{
     private String unSelectTexture;
     // Selected textureRegion id
     private String selectedTexture;
+    // Name of actor
+    private String actorName;
 
+    public PlayerActor(int id, Vector2 loc, Vector2 scaler, String name, boolean playable) {
+        super(new Sprite(jAssets.getTextureRegion(String.valueOf(id))));
+        this.boardLocation = loc;
+        this.setSize(this.getWidth() * scaler.x, this.getHeight() * scaler.y);
+        this.setFlip(false,true);
+        this.actorName = name;
+        this.playableActor = playable;
+    }
 
     public PlayerActor(int unSelTex, Vector2 loc, Vector2 scaler, int type, int selTex) {
         super(new Sprite(jAssets.getTextureRegion(String.valueOf(unSelTex))));
