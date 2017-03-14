@@ -291,7 +291,7 @@
    <tile gid="0"/>
   </data>
  </layer>
- <layer name="playerActor" width="6" height="6">
+ <layer name="actors" width="6" height="6">
   <data>
    <tile gid="263"/>
    <tile gid="0"/>

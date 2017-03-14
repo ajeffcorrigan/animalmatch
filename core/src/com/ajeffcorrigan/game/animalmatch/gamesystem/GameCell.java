@@ -97,4 +97,8 @@ public class GameCell {
             }
         }
     }
+
+    public int getTileCode(int size) {
+        return (int)logicCoordinates.x + ((int)logicCoordinates.y * (int)size);
+    }
 }

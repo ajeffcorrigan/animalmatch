@@ -9,85 +9,92 @@ import com.badlogic.gdx.math.Vector2;
 public class PlayerActor extends Sprite{
     // Speed of movement.
     private final float moveSpeed = 113.856f;
-    // Location of sprite on game board.
+    // Location of sprite on game board in pixels.
     private Vector2 boardLocation;
+    // Current cell location in rows / columns
+    private Vector2 cellLocation;
     // Player bounds
     private Rectangle playerBounds;
     // Player state.
     private boolean playerSelected;
-    // Player type
-    private int playerType;
     // Should player be visible.
     private boolean drawPlayer;
-    // Player tile gid
-    private int tileId;
     // Is Player moving?
     private boolean playerMoving;
     // Current move direction
     private Vector2 moveDirection;
     // Center of bounds
-    private Vector2 centerBounds;
+    private Vector2 centerBounds = new Vector2();
     // Player can be played?
     private boolean playableActor;
     // Unselected textureRegion id
-    private String unSelectTexture;
+    private int unSelectTexture;
     // Selected textureRegion id
-    private String selectedTexture;
+    private int selectedTexture;
     // Name of actor
     private String actorName;
 
-    public PlayerActor(int id, Vector2 loc, Vector2 scaler, String name, boolean playable) {
+
+    // Constructor for nonplayable actor
+    public PlayerActor(int id, Vector2 loc, Vector2 scaler, String name, boolean playable, Vector2 cl) {
         super(new Sprite(jAssets.getTextureRegion(String.valueOf(id))));
-        this.boardLocation = loc;
-        this.setSize(this.getWidth() * scaler.x, this.getHeight() * scaler.y);
-        this.setFlip(false,true);
-        this.actorName = name;
-        this.playableActor = playable;
+        setSharedSettings(loc, scaler, name, playable, cl);
     }
 
-    public PlayerActor(int unSelTex, Vector2 loc, Vector2 scaler, int type, int selTex) {
-        super(new Sprite(jAssets.getTextureRegion(String.valueOf(unSelTex))));
-        this.unSelectTexture = String.valueOf(unSelTex);
-        this.selectedTexture = String.valueOf(selTex);
-        this.tileId = unSelTex;
+    public PlayerActor(int unSelected, Vector2 loc, Vector2 scaler, String name, boolean playable, int selected, Vector2 cl) {
+        // Set starting sprite as unselected value
+        super(new Sprite(jAssets.getTextureRegion(String.valueOf(unSelected))));
+        this.unSelectTexture = unSelected;
+        this.selectedTexture = selected;
+        setSharedSettings(loc, scaler, name, playable, cl);
+    }
+
+    // Shared settings for both playable and nonplayable actors
+    private void setSharedSettings(Vector2 loc, Vector2 scaler, String name, boolean playable, Vector2 cl) {
         this.boardLocation = loc;
-        this.setPosition(boardLocation.x,boardLocation.y);
         this.setSize(this.getWidth() * scaler.x, this.getHeight() * scaler.y);
+        this.actorName = name;
+        this.playableActor = playable;
+        this.cellLocation = cl;
+        this.setPosition(boardLocation.x,boardLocation.y);
         this.setFlip(false,true);
         this.playerBounds = new Rectangle(boardLocation.x,boardLocation.y,getWidth(),getHeight());
-        this.centerBounds = new Vector2(playerBounds.getX() + (playerBounds.getWidth() / 2), playerBounds.getY() + (playerBounds.getHeight() / 2));
-        this.playerType = type;
-        this.playerSelected = false;
+        setCenterBounds();
         this.drawPlayer = true;
         this.playerMoving = false;
         this.moveDirection = new Vector2(0,0);
+        this.playerSelected = false;
     }
 
     // Get the current player bounds
     public Rectangle getPlayerBounds() {
         return playerBounds;
     }
-
     // Checks is player actor is currently selected.
     public boolean isPlayerSelected() { return playerSelected; }
-    // Sets the state of the player
-    public void setPlayerSelected(boolean playerSelected) { this.playerSelected = playerSelected; }
-
+    // Gets the center coordinates of the bounding box.
+    public Vector2 getCenterBounds() { return centerBounds; }
+    // Checks to see if actor should be drawn
     public boolean isDrawPlayer() { return drawPlayer; }
-    public int getPlayerType() { return playerType; }
 
     public void setMoveDirection(Vector2 mD) {
-        this.playerMoving = true;
-        this.moveDirection = mD;
+        if(playableActor) {
+            this.playerMoving = true;
+            this.moveDirection = mD;
+        }
     }
 
     public void stopMoving() {
-        this.moveDirection.set(0,0);
-        this.playerMoving = false;
+        if(playableActor) {
+            this.moveDirection.set(0, 0);
+            this.playerMoving = false;
+        }
     }
 
+    // Is the actor moving
     public boolean isPlayerMoving() { return playerMoving; }
 
+    // Update actor position details.
     public void update(float delta) {
         this.setPosition(this.getX() + (this.moveDirection.x * delta * this.moveSpeed),this.getY() + (this.moveDirection.y * delta * this.moveSpeed));
         this.updateBounds();
@@ -97,10 +104,24 @@ public class PlayerActor extends Sprite{
         this.playerBounds.setPosition(this.getX(),this.getY());
         setCenterBounds();
     }
+
+    public void updateCell(Vector2 gc) {
+        this.cellLocation.set(gc);
+    }
+
     // Updates the center point of the player
     private void setCenterBounds() {
         this.centerBounds.set(playerBounds.getX() + (playerBounds.getWidth() / 2), playerBounds.getY() + (playerBounds.getHeight() / 2));
     }
-    // Gets the center coordinates of the bounding box.
-    public Vector2 getCenterBounds() { return centerBounds; }
+
+    // Sets the state of the player
+    public void setPlayerSelected(boolean playerSelected) {
+        if(playableActor) {
+            this.playerSelected = playerSelected;
+        }
+    }
+    // Is the actor playable?
+    public boolean isPlayableActor() { return playableActor; }
+    // Get actor name
+    public String getActorName() { return actorName; }
 }

@@ -153,10 +153,10 @@ public class GamePlayScreen extends ScreenAdapter implements InputProcessor {
                     if(pa.isPlayerSelected()) {
                         pa.setPlayerSelected(false);
                         pa.stopMoving();
-                        Gdx.app.debug(this.getClass().getSimpleName(), "PlayerActor type "+ pa.getPlayerType() +" is unselected.");
+                        Gdx.app.debug(this.getClass().getSimpleName(), "PlayerActor "+ pa.getActorName() +" is unselected.");
                     } else {
                         pa.setPlayerSelected(true);
-                        Gdx.app.debug(this.getClass().getSimpleName(), "PlayerActor type "+ pa.getPlayerType() +" is selected.");
+                        Gdx.app.debug(this.getClass().getSimpleName(), "PlayerActor type "+ pa.getActorName() +" is selected.");
                     }
 
                 }

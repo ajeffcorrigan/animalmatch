@@ -20,6 +20,12 @@ public class GameBoard {
     private Array<GameCell> gameCells;
     // Array of GameCell objects.
     private Array<PlayerActor> playerActors;
+    // Array of GameCell objects.
+    private Array<PlayerActor> nonPlayActors;
+    // Array of non moving actor bodies
+    private Array<Rectangle> nonMovingActors;
+    // Array of non moving actor bodies
+    private Array<Rectangle> nonPlayableBounds;
     // Size of the game board in vector2
     private Vector2 gameBoardSize;
     // Starting location of the game board on the screen.
@@ -50,6 +56,12 @@ public class GameBoard {
         this.gbSize = new Vector2(AnimalMatch.gw - ((AnimalMatch.gw * .02f) * 2), AnimalMatch.gh - (AnimalMatch.gh * .30f));
         // Initialize the actors
         this.playerActors = new Array<PlayerActor>();
+        // Initialize the non playable actors
+        this.nonPlayActors = new Array<PlayerActor>();
+        // Initialize nonPlayableBounds
+        this.nonPlayableBounds = new Array<Rectangle>();
+        // Initialize non moving actors
+        this.nonMovingActors = new Array<Rectangle>();
         //Initialize the Game Board bounds.
         this.gbBound = new Rectangle(sl.x,sl.y,gbSize.x,gbSize.y);
         // Set the scale of the board based on board size
@@ -68,13 +80,18 @@ public class GameBoard {
                 this.glm.setTileGraphics(gameCells.peek());
                 gameCells.peek().updateSpriteScale(scaleImage);
                 // Check if actor exists at this location.
-                if(glm.playerExists(gameCells.peek())) {
+                if(glm.ifActorExists(gameCells.peek().getTileCode((int)tileSize.y))) {
+                    if()
                     playerActors.add(glm.setPlayerActor(gameCells.peek(),scaleImage));
                 }
             }
         }
         // Get the non-passable areas.
         nonPassBounds = glm.getNonPassBounds(startLoc, scaleImage);
+        // Non playable actor bounds
+        for(PlayerActor pa : playerActors) {
+            if(!pa.isPlayableActor()) { nonPlayableBounds.add(pa.getPlayerBounds()); }
+        }
     }
 
     // Updates the scale of the board's graphics, should be called if scaleImage variable changes.
@@ -94,7 +111,7 @@ public class GameBoard {
 
     // Run through updates.
     public void update(float delta) {
-        // Draw player
+        // Process each player.
         for(PlayerActor pa : playerActors) {
             if (pa.isPlayerMoving()) {
                 // Check bounds of board for collision
@@ -105,19 +122,31 @@ public class GameBoard {
                 for(Rectangle npB : nonPassBounds) {
                     if(npB.overlaps(pa.getPlayerBounds())) { pa.stopMoving(); }
                 }
+                // Check if player
+                for(Rectangle pB : nonPlayableBounds) {
+                    if(pB.overlaps(pa.getPlayerBounds())) { pa.stopMoving(); }
+                }
+
                 // If the bounds have been touched, player is no longer moving, update coordinates.
                 if(!pa.isPlayerMoving()) {
                     for(GameCell gc : gameCells) {
                         if(new Rectangle(gc.getScreenLocation().x,gc.getScreenLocation().y,this.tileSize.x,this.tileSize.y).contains(pa.getCenterBounds())) {
                             pa.setPosition(gc.getScreenLocation().x,gc.getScreenLocation().y);
                             pa.updateBounds();
+                            pa.updateCell(gc.getLogicCoordinates());
                         }
                     }
+                } else {
+                    // Update player if still moving.
+                    pa.update(delta);
                 }
-                // Update player.
-                pa.update(delta);
+                break;
             }
         }
+
+        // Check for elimination
+        for( PlayerActor np)
+
     }
 
     // Draw the bounds

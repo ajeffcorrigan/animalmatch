@@ -53,7 +53,7 @@ public class GameLevelManager {
         // Check for texture regions, add if not available.
         for(XmlReader.Element layer : rootElement.getChildrenByName("layer")) {
             for(XmlReader.Element tileData : layer.getChildByName("data").getChildrenByName("tile")) {
-                if(!gam.textureRegionExists(tileData.get("gid"))){
+                if(!gam.textureRegionExists(tileData.get("gid"))) {
                     gam.addTextureRegionById(tileData.getInt("gid"));
                 }
             }
@@ -84,7 +84,7 @@ public class GameLevelManager {
     public void setTileGraphics(GameCell gc) {
         int tileNum = (int)gc.getLogicCoordinates().x + ((int)gc.getLogicCoordinates().y * (int)this.levelSize.y);
         for(XmlReader.Element layerElement : rootElement.getChildrenByName("layer")) {
-            if(!layerElement.getAttribute("name").equalsIgnoreCase("playerActor")) {
+            if(!layerElement.getAttribute("name").equalsIgnoreCase("actors")) {
                 String layerGid = layerElement.getChildByName("data").getChild(tileNum).get("gid");
                 if(Integer.valueOf(layerGid) > 0) {
                     gc.addSpriteLayer(layerElement.getIntAttribute("name"), jAssets.getTextureRegion(layerGid));
@@ -93,21 +93,53 @@ public class GameLevelManager {
         }
     }
 
-    // Checks is an actor on the playerActor layer exists on this cell.
-    public boolean playerExists(GameCell gc) {
+    // Checks if a player exists on this tile.
+    public boolean ifActorExists(int tileNum) {
         // Assume there is no actor at this cell.
         boolean retVal = false;
-        int tileNum = (int)gc.getLogicCoordinates().x + ((int)gc.getLogicCoordinates().y * (int)this.levelSize.y);
         for(XmlReader.Element layerElement : rootElement.getChildrenByNameRecursively("layer")) {
-            if(layerElement.getAttribute("name").equalsIgnoreCase("playerActor")) {
-                String layerGid = layerElement.getChildByName("data").getChild(tileNum).getAttribute("gid");
-                if(Integer.valueOf(layerGid) > 0) {
+            if(layerElement.getAttribute("name").equalsIgnoreCase("actors")) {
+                if(layerElement.getChildByName("data").getChild(tileNum).getInt("gid") > 0) {
                     retVal = true;
                     break;
                 }
             }
         }
         return retVal;
+    }
+
+    public boolean ifPlayableActor(int tileNum) {
+        // Get the tile id
+        SheetManager sm;
+        for(XmlReader.Element layerElement : rootElement.getChildrenByNameRecursively("layer")) {
+            if(layerElement.getAttribute("name").equalsIgnoreCase("actors")) {
+                sm = gam.getSheetByTileId(layerElement.getChildByName("data").getChild(tileNum).getInt("gid"));
+                break;
+            }
+        }
+
+        int tileGid = (layerGid - sm.getFirstId());
+        String actorName = "";
+        boolean isPlayable = false;
+        for(XmlReader.Element tileSet : rootElement.getChildrenByNameRecursively("tileset")) {
+            if(tileSet.get("name").equalsIgnoreCase(sm.getAssetName())) {
+                for(XmlReader.Element tileElement : tileSet.getChildrenByNameRecursively("tile")) {
+                    if(tileElement.getInt("id") == tileGid) {
+                        for(XmlReader.Element tileProperty : tileElement.getChild(0).getChildrenByNameRecursively("property")) {
+                            if(tileProperty.get("name").equalsIgnoreCase("name")) { actorName = tileProperty.get("value"); }
+                            if(tileProperty.get("name").equalsIgnoreCase("playable")) { isPlayable = tileProperty.getBoolean("value"); }
+                        }
+                        break;
+                    }
+
+                }
+            }
+        }
+        if(isPlayable) {
+            return new PlayerActor(layerGid,gc.getScreenLocation(),sc,actorName,isPlayable,layerGid, gc.getLogicCoordinates());
+        } else {
+            return new PlayerActor(layerGid,gc.getScreenLocation(),sc,actorName,isPlayable, gc.getLogicCoordinates());
+        }
     }
 
     public PlayerActor setPlayerActor(GameCell gc, Vector2 sc) {
@@ -128,17 +160,23 @@ public class GameLevelManager {
             if(tileSet.get("name").equalsIgnoreCase(sm.getAssetName())) {
                 for(XmlReader.Element tileElement : tileSet.getChildrenByNameRecursively("tile")) {
                     if(tileElement.getInt("id") == tileGid) {
-                        for(XmlReader.Element tileProperties : tileElement.getChild(0).getChildrenByNameRecursively("property")) {
-                            if(tileProperties.getAttribute("name").equalsIgnoreCase("name")) { actorName = tileProperties.get("value"); }
-                            if(tileProperties.get("name").equalsIgnoreCase("playable")) { isPlayable = tileProperties.getBoolean("value"); }
-                            break;
+                        for(XmlReader.Element tileProperty : tileElement.getChild(0).getChildrenByNameRecursively("property")) {
+                            if(tileProperty.get("name").equalsIgnoreCase("name")) { actorName = tileProperty.get("value"); }
+                            if(tileProperty.get("name").equalsIgnoreCase("playable")) { isPlayable = tileProperty.getBoolean("value"); }
                         }
+                        break;
                     }
+
                 }
             }
         }
+        if(isPlayable) {
+            return new PlayerActor(layerGid,gc.getScreenLocation(),sc,actorName,isPlayable,layerGid, gc.getLogicCoordinates());
+        } else {
+            return new PlayerActor(layerGid,gc.getScreenLocation(),sc,actorName,isPlayable, gc.getLogicCoordinates());
+        }
 
-        return new PlayerActor(layerGid,gc.getScreenLocation(),sc,0,0);
+
     }
 
     // Get the rectangular bounds for non passable areas.
