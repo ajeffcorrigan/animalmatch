@@ -94,21 +94,16 @@ public class GameLevelManager {
     }
 
     // Checks if a player exists on this tile.
-    public boolean ifActorExists(int tileNum) {
-        // Assume there is no actor at this cell.
-        boolean retVal = false;
+    public int ifActorExists(int tileNum) {
         for(XmlReader.Element layerElement : rootElement.getChildrenByNameRecursively("layer")) {
             if(layerElement.getAttribute("name").equalsIgnoreCase("actors")) {
-                if(layerElement.getChildByName("data").getChild(tileNum).getInt("gid") > 0) {
-                    retVal = true;
-                    break;
-                }
+                return layerElement.getChildByName("data").getChild(tileNum).getInt("gid");
             }
         }
-        return retVal;
+        return 0;
     }
 
-    public boolean ifPlayableActor(int tileNum) {
+    public boolean isPlayableActor(int tileNum) {
         // Get the tile id
         SheetManager sm;
         for(XmlReader.Element layerElement : rootElement.getChildrenByNameRecursively("layer")) {
@@ -175,8 +170,6 @@ public class GameLevelManager {
         } else {
             return new PlayerActor(layerGid,gc.getScreenLocation(),sc,actorName,isPlayable, gc.getLogicCoordinates());
         }
-
-
     }
 
     // Get the rectangular bounds for non passable areas.
