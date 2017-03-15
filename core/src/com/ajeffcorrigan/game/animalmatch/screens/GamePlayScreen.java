@@ -149,7 +149,7 @@ public class GamePlayScreen extends ScreenAdapter implements InputProcessor {
         if(this.gameBoard.getGbBound().contains(screenX,screenY)) {
             Gdx.app.debug(this.getClass().getSimpleName(), "GameBoard was touched.");
             for(PlayerActor pa : gameBoard.getPlayerActors()) {
-                if(pa.getPlayerBounds().contains(screenX,screenY)) {
+                if(pa.getPlayerBounds().contains(screenX,screenY) && !pa.isPlayerMatched()) {
                     if(pa.isPlayerSelected()) {
                         pa.setPlayerSelected(false);
                         pa.stopMoving();

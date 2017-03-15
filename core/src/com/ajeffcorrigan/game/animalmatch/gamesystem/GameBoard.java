@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.XmlReader;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -58,10 +59,6 @@ public class GameBoard {
         this.playerActors = new Array<PlayerActor>();
         // Initialize the non playable actors
         this.nonPlayActors = new Array<PlayerActor>();
-        // Initialize nonPlayableBounds
-        this.nonPlayableBounds = new Array<Rectangle>();
-        // Initialize non moving actors
-        this.nonMovingActors = new Array<Rectangle>();
         //Initialize the Game Board bounds.
         this.gbBound = new Rectangle(sl.x,sl.y,gbSize.x,gbSize.y);
         // Set the scale of the board based on board size
@@ -80,18 +77,27 @@ public class GameBoard {
                 this.glm.setTileGraphics(gameCells.peek());
                 gameCells.peek().updateSpriteScale(scaleImage);
                 // Check if actor exists at this location.
-                if(glm.ifActorExists(gameCells.peek().getTileCode((int)tileSize.y))) {
-                    if()
-                    playerActors.add(glm.setPlayerActor(gameCells.peek(),scaleImage));
+                int tCode = glm.ifActorExists(gameCells.peek().getTileCode((int)gameBoardSize.y));
+                if(tCode > 0) {
+                    XmlReader.Element actorPropterties = glm.getActorDetails(tCode);
+                    String actorName = "";
+                    boolean isPlayable = false;
+                    if(actorPropterties != null) {
+                        for(XmlReader.Element actorProperty : actorPropterties.getChildrenByNameRecursively("property")) {
+                            if(actorProperty.get("name").equalsIgnoreCase("name")) { actorName = actorProperty.get("value"); }
+                            if(actorProperty.get("name").equalsIgnoreCase("playable")) { isPlayable = actorProperty.getBoolean("value"); }
+                        }
+                        if(isPlayable) {
+                            playerActors.add(new PlayerActor(tCode,gameCells.peek().getScreenLocation(),scaleImage,actorName,isPlayable,tCode, gameCells.peek().getLogicCoordinates()));
+                        } else {
+                            nonPlayActors.add(new PlayerActor(tCode,gameCells.peek().getScreenLocation(),scaleImage,actorName,isPlayable, gameCells.peek().getLogicCoordinates()));
+                        }
+                    }
                 }
             }
         }
         // Get the non-passable areas.
         nonPassBounds = glm.getNonPassBounds(startLoc, scaleImage);
-        // Non playable actor bounds
-        for(PlayerActor pa : playerActors) {
-            if(!pa.isPlayableActor()) { nonPlayableBounds.add(pa.getPlayerBounds()); }
-        }
     }
 
     // Updates the scale of the board's graphics, should be called if scaleImage variable changes.
@@ -103,6 +109,10 @@ public class GameBoard {
         for(GameCell gc : gameCells) { gc.drawBackground(sb); }
         // Draw player
         for(PlayerActor pa : playerActors) {
+            if (pa.isDrawPlayer()) { pa.draw(sb); }
+        }
+        // Draw player
+        for(PlayerActor pa : nonPlayActors) {
             if (pa.isDrawPlayer()) { pa.draw(sb); }
         }
         // Draw foreground
@@ -118,14 +128,15 @@ public class GameBoard {
                 if(!gbBound.contains(pa.getPlayerBounds().getX(),pa.getPlayerBounds().getY()) || !gbBound.contains(pa.getPlayerBounds().getX()+pa.getPlayerBounds().getWidth(),pa.getPlayerBounds().getY()+pa.getPlayerBounds().getHeight())) {
                     pa.stopMoving();
                 }
-                // Check bounds of non pass zones
-                for(Rectangle npB : nonPassBounds) {
-                    if(npB.overlaps(pa.getPlayerBounds())) { pa.stopMoving(); }
+                // Check bounds of non pass zones, trees, boxes, etc.
+                for(Rectangle npB : nonPassBounds) { if(npB.overlaps(pa.getPlayerBounds())) { pa.stopMoving(); } }
+                // Check for bounds of non player bounds
+                for(PlayerActor nPA : nonPlayActors) {
+                    if(nPA.getBoundingRectangle().overlaps(pa.getPlayerBounds()) && !nPA.isPlayerMatched()) {
+                        pa.stopMoving();
+                    }
                 }
-                // Check if player
-                for(Rectangle pB : nonPlayableBounds) {
-                    if(pB.overlaps(pa.getPlayerBounds())) { pa.stopMoving(); }
-                }
+
 
                 // If the bounds have been touched, player is no longer moving, update coordinates.
                 if(!pa.isPlayerMoving()) {
@@ -136,6 +147,17 @@ public class GameBoard {
                             pa.updateCell(gc.getLogicCoordinates());
                         }
                     }
+                    for(PlayerActor nPA : nonPlayActors) {
+                        // Only check same name actors
+                        if(nPA.getActorName().equalsIgnoreCase(pa.getActorName()) && (!nPA.isPlayerMatched())) {
+                            if(nPA.isBesideActor(pa.getCellLocation())) {
+                                Gdx.app.debug(this.getClass().getSimpleName(), "PlayerActor "+ pa.getActorName() +" is beside same.");
+                                pa.setPlayerMatched(true);
+                                nPA.setPlayerMatched(true);
+                            }
+                        }
+                    }
+
                 } else {
                     // Update player if still moving.
                     pa.update(delta);
@@ -143,10 +165,6 @@ public class GameBoard {
                 break;
             }
         }
-
-        // Check for elimination
-        for( PlayerActor np)
-
     }
 
     // Draw the bounds

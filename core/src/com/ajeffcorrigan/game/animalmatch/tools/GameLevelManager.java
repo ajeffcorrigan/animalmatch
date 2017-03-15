@@ -74,12 +74,10 @@ public class GameLevelManager {
     public Vector2 getLevelSize() { return this.levelSize; }
     // Set the level's size
     private void setLevelSize(Vector2 ls) { this.levelSize = ls; }
-
     // Get the tile size for the map
     public Vector2 getTileSize() { return this.tileSize; }
     // Set the tile size for the map
     private void setTileSize(Vector2 ts) { this.tileSize = ts; }
-
     // Sets the background tiles
     public void setTileGraphics(GameCell gc) {
         int tileNum = (int)gc.getLogicCoordinates().x + ((int)gc.getLogicCoordinates().y * (int)this.levelSize.y);
@@ -92,8 +90,7 @@ public class GameLevelManager {
             }
         }
     }
-
-    // Checks if a player exists on this tile.
+    // Checks if a player exists on this tile returns a tile larger than 0.
     public int ifActorExists(int tileNum) {
         for(XmlReader.Element layerElement : rootElement.getChildrenByNameRecursively("layer")) {
             if(layerElement.getAttribute("name").equalsIgnoreCase("actors")) {
@@ -102,76 +99,21 @@ public class GameLevelManager {
         }
         return 0;
     }
-
-    public boolean isPlayableActor(int tileNum) {
-        // Get the tile id
-        SheetManager sm;
-        for(XmlReader.Element layerElement : rootElement.getChildrenByNameRecursively("layer")) {
-            if(layerElement.getAttribute("name").equalsIgnoreCase("actors")) {
-                sm = gam.getSheetByTileId(layerElement.getChildByName("data").getChild(tileNum).getInt("gid"));
-                break;
-            }
-        }
-
-        int tileGid = (layerGid - sm.getFirstId());
-        String actorName = "";
-        boolean isPlayable = false;
-        for(XmlReader.Element tileSet : rootElement.getChildrenByNameRecursively("tileset")) {
-            if(tileSet.get("name").equalsIgnoreCase(sm.getAssetName())) {
-                for(XmlReader.Element tileElement : tileSet.getChildrenByNameRecursively("tile")) {
-                    if(tileElement.getInt("id") == tileGid) {
-                        for(XmlReader.Element tileProperty : tileElement.getChild(0).getChildrenByNameRecursively("property")) {
-                            if(tileProperty.get("name").equalsIgnoreCase("name")) { actorName = tileProperty.get("value"); }
-                            if(tileProperty.get("name").equalsIgnoreCase("playable")) { isPlayable = tileProperty.getBoolean("value"); }
-                        }
-                        break;
-                    }
-
-                }
-            }
-        }
-        if(isPlayable) {
-            return new PlayerActor(layerGid,gc.getScreenLocation(),sc,actorName,isPlayable,layerGid, gc.getLogicCoordinates());
-        } else {
-            return new PlayerActor(layerGid,gc.getScreenLocation(),sc,actorName,isPlayable, gc.getLogicCoordinates());
-        }
-    }
-
-    public PlayerActor setPlayerActor(GameCell gc, Vector2 sc) {
-        int tileNum = (int)gc.getLogicCoordinates().x + ((int)gc.getLogicCoordinates().y * (int)this.levelSize.y);
-        // Get the tile id
-        int layerGid = 0;
-        for(XmlReader.Element layerElement : rootElement.getChildrenByNameRecursively("layer")) {
-            if(layerElement.getAttribute("name").equalsIgnoreCase("playerActor")) {
-                layerGid = layerElement.getChildByName("data").getChild(tileNum).getInt("gid");
-                break;
-            }
-        }
+    // Return the property element for the actor
+    public XmlReader.Element getActorDetails(int layerGid) {
         SheetManager sm = gam.getSheetByTileId(layerGid);
-        int tileGid = (layerGid - sm.getFirstId());
-        String actorName = "";
-        boolean isPlayable = false;
+        int actorGid = (layerGid - sm.getFirstId());
         for(XmlReader.Element tileSet : rootElement.getChildrenByNameRecursively("tileset")) {
             if(tileSet.get("name").equalsIgnoreCase(sm.getAssetName())) {
                 for(XmlReader.Element tileElement : tileSet.getChildrenByNameRecursively("tile")) {
-                    if(tileElement.getInt("id") == tileGid) {
-                        for(XmlReader.Element tileProperty : tileElement.getChild(0).getChildrenByNameRecursively("property")) {
-                            if(tileProperty.get("name").equalsIgnoreCase("name")) { actorName = tileProperty.get("value"); }
-                            if(tileProperty.get("name").equalsIgnoreCase("playable")) { isPlayable = tileProperty.getBoolean("value"); }
-                        }
-                        break;
+                    if(tileElement.getInt("id") == actorGid) {
+                        return tileElement.getChild(0);
                     }
-
                 }
             }
         }
-        if(isPlayable) {
-            return new PlayerActor(layerGid,gc.getScreenLocation(),sc,actorName,isPlayable,layerGid, gc.getLogicCoordinates());
-        } else {
-            return new PlayerActor(layerGid,gc.getScreenLocation(),sc,actorName,isPlayable, gc.getLogicCoordinates());
-        }
+        return null;
     }
-
     // Get the rectangular bounds for non passable areas.
     public Array<Rectangle> getNonPassBounds(Vector2 sl, Vector2 sc) {
         Array<Rectangle> npb = new Array<Rectangle>();

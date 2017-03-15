@@ -1,14 +1,14 @@
 package com.ajeffcorrigan.game.animalmatch.gamesystem;
 
 import com.ajeffcorrigan.game.animalmatch.tools.jAssets;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g3d.particles.influencers.DynamicsModifier;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 public class PlayerActor extends Sprite{
     // Speed of movement.
-    private final float moveSpeed = 113.856f;
+    private final float moveSpeed = 366.856f;
     // Location of sprite on game board in pixels.
     private Vector2 boardLocation;
     // Current cell location in rows / columns
@@ -33,6 +33,8 @@ public class PlayerActor extends Sprite{
     private int selectedTexture;
     // Name of actor
     private String actorName;
+    // Has the actor been matched
+    private boolean playerMatched;
 
 
     // Constructor for nonplayable actor
@@ -64,6 +66,7 @@ public class PlayerActor extends Sprite{
         this.playerMoving = false;
         this.moveDirection = new Vector2(0,0);
         this.playerSelected = false;
+        this.playerMatched = false;
     }
 
     // Get the current player bounds
@@ -124,4 +127,32 @@ public class PlayerActor extends Sprite{
     public boolean isPlayableActor() { return playableActor; }
     // Get actor name
     public String getActorName() { return actorName; }
+    // Check if provided actor is beside actor
+    public boolean isBesideActor(Vector2 paLocation) {
+        Gdx.app.debug(this.getClass().getSimpleName(), "NonPlayerActor "+ this.actorName +": "+ this.cellLocation);
+        Gdx.app.debug(this.getClass().getSimpleName(), "PlayerActor: "+ paLocation);
+        if(paLocation.x == cellLocation.x) {
+            if(paLocation.y == (cellLocation.y - 1) || paLocation.y == (cellLocation.y + 1)) {
+                return true;
+            }
+        }
+        if(paLocation.y == cellLocation.y) {
+            if(paLocation.x == (cellLocation.x - 1) || paLocation.x == (cellLocation.x + 1)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    // Get current cell coordinates
+    public Vector2 getCellLocation() { return cellLocation; }
+
+    public boolean isPlayerMatched() {
+        return playerMatched;
+    }
+
+    public void setPlayerMatched(boolean playerMatched) {
+        this.playerMatched = playerMatched;
+        this.drawPlayer = false;
+        this.playerSelected = false;
+    }
 }
