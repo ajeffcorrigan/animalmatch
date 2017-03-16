@@ -2,6 +2,7 @@ package com.ajeffcorrigan.game.animalmatch.gamesystem;
 
 import com.ajeffcorrigan.game.animalmatch.tools.jAssets;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -108,9 +109,7 @@ public class PlayerActor extends Sprite{
         setCenterBounds();
     }
 
-    public void updateCell(Vector2 gc) {
-        this.cellLocation.set(gc);
-    }
+    public void updateCell(Vector2 newCell) { this.cellLocation = newCell; }
 
     // Updates the center point of the player
     private void setCenterBounds() {
@@ -121,6 +120,13 @@ public class PlayerActor extends Sprite{
     public void setPlayerSelected(boolean playerSelected) {
         if(playableActor) {
             this.playerSelected = playerSelected;
+            if(this.playerSelected) {
+                super.setRegion(jAssets.getTextureRegion(String.valueOf(selectedTexture)));
+                this.setFlip(false,true);
+            } else {
+                super.setRegion(jAssets.getTextureRegion(String.valueOf(unSelectTexture)));
+                this.setFlip(false,true);
+            }
         }
     }
     // Is the actor playable?
@@ -129,8 +135,6 @@ public class PlayerActor extends Sprite{
     public String getActorName() { return actorName; }
     // Check if provided actor is beside actor
     public boolean isBesideActor(Vector2 paLocation) {
-        Gdx.app.debug(this.getClass().getSimpleName(), "NonPlayerActor "+ this.actorName +": "+ this.cellLocation);
-        Gdx.app.debug(this.getClass().getSimpleName(), "PlayerActor: "+ paLocation);
         if(paLocation.x == cellLocation.x) {
             if(paLocation.y == (cellLocation.y - 1) || paLocation.y == (cellLocation.y + 1)) {
                 return true;

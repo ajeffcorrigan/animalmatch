@@ -81,6 +81,9 @@ public class GamePlayScreen extends ScreenAdapter implements InputProcessor {
 
     private void update(float delta) {
         gameBoard.update(delta);
+        if(gameBoard.gameMatched()) {
+            //Todo: Next level mechanics.
+        }
     }
 
     @Override

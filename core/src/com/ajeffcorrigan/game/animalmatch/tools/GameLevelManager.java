@@ -122,5 +122,9 @@ public class GameLevelManager {
         }
         return npb;
     }
+    // Verify the texture region exists, if not add it.
+    public void verifyTextureRegion(int c) {
+        if(!gam.textureRegionExists(c)) { gam.addTextureRegionById(c); }
+    }
 
 }

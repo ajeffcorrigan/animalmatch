@@ -43,6 +43,10 @@ public class GameBoard {
     private Array<Rectangle> nonPassBounds;
     // Game board bound
     private Rectangle gbBound;
+    // Win condition, how many matches are needed
+    private int matchesNeeded;
+    // Current number of matches
+    private int matchesMade;
 
     public GameBoard(Vector2 sl, GameLevelManager glm, Vector2 tSz) {
         // Start location of the game board.
@@ -65,6 +69,10 @@ public class GameBoard {
         this.setScale();
         // Create a blank board with coordinates and cell locations.
         this.CreateBoard();
+        // Set matches needed
+        this.matchesNeeded = nonPlayActors.size;
+        // Set matched made
+        this.matchesMade = 0;
     }
 
     // Create a new board based on the size of the map.
@@ -88,7 +96,8 @@ public class GameBoard {
                             if(actorProperty.get("name").equalsIgnoreCase("playable")) { isPlayable = actorProperty.getBoolean("value"); }
                         }
                         if(isPlayable) {
-                            playerActors.add(new PlayerActor(tCode,gameCells.peek().getScreenLocation(),scaleImage,actorName,isPlayable,tCode, gameCells.peek().getLogicCoordinates()));
+                            glm.verifyTextureRegion(tCode+10);
+                            playerActors.add(new PlayerActor(tCode,gameCells.peek().getScreenLocation(),scaleImage,actorName,isPlayable,tCode+10, gameCells.peek().getLogicCoordinates()));
                         } else {
                             nonPlayActors.add(new PlayerActor(tCode,gameCells.peek().getScreenLocation(),scaleImage,actorName,isPlayable, gameCells.peek().getLogicCoordinates()));
                         }
@@ -145,6 +154,8 @@ public class GameBoard {
                             pa.setPosition(gc.getScreenLocation().x,gc.getScreenLocation().y);
                             pa.updateBounds();
                             pa.updateCell(gc.getLogicCoordinates());
+                            pa.setPlayerSelected(false);
+                            break;
                         }
                     }
                     for(PlayerActor nPA : nonPlayActors) {
@@ -154,6 +165,7 @@ public class GameBoard {
                                 Gdx.app.debug(this.getClass().getSimpleName(), "PlayerActor "+ pa.getActorName() +" is beside same.");
                                 pa.setPlayerMatched(true);
                                 nPA.setPlayerMatched(true);
+                                this.matchesMade++;
                             }
                         }
                     }
@@ -213,6 +225,9 @@ public class GameBoard {
     public Rectangle getGbBound() { return gbBound; }
     // Return the player actor array
     public Array<PlayerActor> getPlayerActors() { return this.playerActors; }
-    // If player is selected, unselect other players
+    // check if board has completed
+    public boolean gameMatched() {
+        if(matchesMade == matchesNeeded) { return true; } else { return false; }
+    }
 
 }
