@@ -38,7 +38,7 @@ public class SheetManager {
     // Return a vector of the location of the tile on spritesheet
     public Vector2 getTileLocationById(int i) {
         Vector2 tileLoc = new Vector2(0,0);
-        tileLoc.x = (int)(((i - firstId) + 1) / this.numCols);
+        tileLoc.x = (int)((i - firstId) / this.numCols);
         tileLoc.y = (int)((((i - firstId) + 1) - (this.numCols * tileLoc.x)) - 1);
         return tileLoc;
     }

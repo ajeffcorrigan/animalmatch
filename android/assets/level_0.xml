@@ -26,36 +26,43 @@
   <tile id="3">
    <properties>
     <property name="name" value="monkey"/>
+    <property name="playable" type="bool" value="true"/>
    </properties>
   </tile>
   <tile id="4">
    <properties>
     <property name="name" value="panda"/>
+    <property name="playable" type="bool" value="true"/>
    </properties>
   </tile>
   <tile id="5">
    <properties>
     <property name="name" value="parrot"/>
+    <property name="playable" type="bool" value="true"/>
    </properties>
   </tile>
   <tile id="6">
    <properties>
     <property name="name" value="penguin"/>
+    <property name="playable" type="bool" value="true"/>
    </properties>
   </tile>
   <tile id="7">
    <properties>
     <property name="name" value="pig"/>
+    <property name="playable" type="bool" value="true"/>
    </properties>
   </tile>
   <tile id="8">
    <properties>
     <property name="name" value="rabbit"/>
+    <property name="playable" type="bool" value="true"/>
    </properties>
   </tile>
   <tile id="9">
    <properties>
     <property name="name" value="snake"/>
+    <property name="playable" type="bool" value="true"/>
    </properties>
   </tile>
   <tile id="10">
@@ -79,16 +86,43 @@
   <tile id="13">
    <properties>
     <property name="name" value="monkey"/>
+    <property name="playable" type="bool" value="true"/>
    </properties>
   </tile>
   <tile id="14">
    <properties>
     <property name="name" value="panda"/>
+    <property name="playable" type="bool" value="true"/>
    </properties>
   </tile>
   <tile id="15">
    <properties>
     <property name="name" value="parrot"/>
+    <property name="playable" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="16">
+   <properties>
+    <property name="name" value="penguin"/>
+    <property name="playable" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="17">
+   <properties>
+    <property name="name" value="pig"/>
+    <property name="playable" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="18">
+   <properties>
+    <property name="name" value="rabbit"/>
+    <property name="playable" type="bool" value="true"/>
+   </properties>
+  </tile>
+  <tile id="19">
+   <properties>
+    <property name="name" value="snake"/>
+    <property name="playable" type="bool" value="true"/>
    </properties>
   </tile>
   <tile id="20">
@@ -112,16 +146,43 @@
   <tile id="23">
    <properties>
     <property name="name" value="monkey"/>
+    <property name="playable" type="bool" value="false"/>
    </properties>
   </tile>
   <tile id="24">
    <properties>
     <property name="name" value="panda"/>
+    <property name="playable" type="bool" value="false"/>
    </properties>
   </tile>
   <tile id="25">
    <properties>
     <property name="name" value="parrot"/>
+    <property name="playable" type="bool" value="false"/>
+   </properties>
+  </tile>
+  <tile id="26">
+   <properties>
+    <property name="name" value="penguin"/>
+    <property name="playable" type="bool" value="false"/>
+   </properties>
+  </tile>
+  <tile id="27">
+   <properties>
+    <property name="name" value="pig"/>
+    <property name="playable" type="bool" value="false"/>
+   </properties>
+  </tile>
+  <tile id="28">
+   <properties>
+    <property name="name" value="rabbit"/>
+    <property name="playable" type="bool" value="false"/>
+   </properties>
+  </tile>
+  <tile id="29">
+   <properties>
+    <property name="name" value="snake"/>
+    <property name="playable" type="bool" value="false"/>
    </properties>
   </tile>
  </tileset>
@@ -293,13 +354,13 @@
  </layer>
  <layer name="actors" width="6" height="6">
   <data>
-   <tile gid="263"/>
+   <tile gid="270"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="283"/>
+   <tile gid="290"/>
    <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="289"/>
    <tile gid="261"/>
    <tile gid="0"/>
    <tile gid="281"/>
@@ -323,7 +384,7 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="269"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>

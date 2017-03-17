@@ -59,17 +59,21 @@ public class GameLevelManager {
             }
         }
     }
-
+    public void loadNextLevel() {
+        this.currentInternalLevel = this.currentInternalLevel + 1;
+        this.reader = null;
+        this.rootElement = null;
+        this.levelSize = null;
+        LoadLevel(this.currentInternalLevel);
+    }
     // Get current level for display (not zero based).
     public int getCurrentLevel() { return currentInternalLevel + 1; }
-
     // Set current level, accepts displayed level (not zero based).
     public void setCurrentLevel(int currentLevel) {
         if(currentLevel > 0) {
             this.currentInternalLevel = currentLevel - 1;
         }
     }
-
     // Get the level's size, by row and column.
     public Vector2 getLevelSize() { return this.levelSize; }
     // Set the level's size

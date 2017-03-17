@@ -229,5 +229,8 @@ public class GameBoard {
     public boolean gameMatched() {
         if(matchesMade == matchesNeeded) { return true; } else { return false; }
     }
+    public void dispose() {
+
+    }
 
 }

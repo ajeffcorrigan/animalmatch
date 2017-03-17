@@ -82,7 +82,9 @@ public class GamePlayScreen extends ScreenAdapter implements InputProcessor {
     private void update(float delta) {
         gameBoard.update(delta);
         if(gameBoard.gameMatched()) {
-            //Todo: Next level mechanics.
+            glm.loadNextLevel();
+            gameBoard = null;
+            gameBoard = new GameBoard(gbLocation,glm,this.game.gam.getTileSize());
         }
     }
 
@@ -92,10 +94,7 @@ public class GamePlayScreen extends ScreenAdapter implements InputProcessor {
     }
 
     @Override
-    public void show() {
-        super.show();
-        Gdx.app.debug(this.getClass().getSimpleName(), "show() function.");
-    }
+    public void show() { super.show(); }
 
     @Override
     public void hide() {

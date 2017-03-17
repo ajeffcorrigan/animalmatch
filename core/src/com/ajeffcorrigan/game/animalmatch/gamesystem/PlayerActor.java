@@ -120,6 +120,8 @@ public class PlayerActor extends Sprite{
     public void setPlayerSelected(boolean playerSelected) {
         if(playableActor) {
             this.playerSelected = playerSelected;
+            Gdx.app.debug(this.getClass().getSimpleName(), "Actor Bounds: "+ this.playerBounds);
+            Gdx.app.debug(this.getClass().getSimpleName(), "Actor Location: "+ this.boardLocation);
             if(this.playerSelected) {
                 super.setRegion(jAssets.getTextureRegion(String.valueOf(selectedTexture)));
                 this.setFlip(false,true);
