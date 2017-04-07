@@ -3,6 +3,7 @@ package com.ajeffcorrigan.game.animalmatch.tools;
 import com.ajeffcorrigan.game.animalmatch.gamesystem.GameCell;
 import com.ajeffcorrigan.game.animalmatch.gamesystem.PlayerActor;
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
@@ -43,7 +44,8 @@ public class GameLevelManager {
         // XML reader
         reader = new XmlReader();
         // Initialize the file handler.
-        FileHandle xmlFile = new FileHandle(levelFile);
+        // Initialize the file handler.
+        FileHandle xmlFile = Gdx.files.internal(levelFile);
         // Parse and load root details.
         try { this.rootElement = reader.parse(xmlFile); } catch (IOException e) { e.printStackTrace(); }
         // Set the level size in rows and columns
