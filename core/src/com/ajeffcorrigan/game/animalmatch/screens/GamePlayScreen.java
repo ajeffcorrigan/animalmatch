@@ -149,7 +149,7 @@ public class GamePlayScreen extends ScreenAdapter implements InputProcessor {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         // If game board is touched.
         if(this.gameBoard.getGbBound().contains(screenX,screenY)) {
-            Gdx.app.debug(this.getClass().getSimpleName(), "GameBoard was touched.");
+            // Gdx.app.debug(this.getClass().getSimpleName(), "GameBoard was touched.");
             for(PlayerActor pa : gameBoard.getPlayerActors()) {
                 if(pa.getPlayerBounds().contains(screenX,screenY) && !pa.isPlayerMatched()) {
                     if(pa.isPlayerSelected()) {
@@ -159,6 +159,8 @@ public class GamePlayScreen extends ScreenAdapter implements InputProcessor {
                     } else {
                         pa.setPlayerSelected(true);
                         Gdx.app.debug(this.getClass().getSimpleName(), "PlayerActor type "+ pa.getActorName() +" is selected.");
+                        Gdx.app.debug(this.getClass().getSimpleName(), "PlayerActor type "+ pa.getActorName() +" cell location: "+ pa.getCellLocation());
+                        Gdx.app.debug(this.getClass().getSimpleName(), "Cell Bounds for: "+ pa.getCellLocation() +" is ...");
                     }
 
                 }

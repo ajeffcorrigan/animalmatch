@@ -9,7 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 
 public class PlayerActor extends Sprite{
     // Speed of movement.
-    private final float moveSpeed = 366.856f;
+    private final float moveSpeed = 380f;
     // Location of sprite on game board in pixels.
     private Vector2 boardLocation;
     // Current cell location in rows / columns

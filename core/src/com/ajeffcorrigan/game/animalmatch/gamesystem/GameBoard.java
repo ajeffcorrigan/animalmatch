@@ -106,7 +106,7 @@ public class GameBoard {
             }
         }
         // Get the non-passable areas.
-        nonPassBounds = glm.getNonPassBounds(startLoc, scaleImage);
+        this.nonPassBounds = glm.getNonPassBounds(startLoc, scaleImage);
     }
 
     // Updates the scale of the board's graphics, should be called if scaleImage variable changes.
